@@ -100,11 +100,19 @@ const About = () => {
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
             variants={slideRight}
-            style={{ flex: '0 0 auto' }}
+            style={{
+              flex: '0 0 auto',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
           >
             <Box
               sx={{
                 position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 '&::before': {
                   content: '""',
                   position: 'absolute',
@@ -132,6 +140,9 @@ const About = () => {
                   overflow: 'hidden',
                   background: '#1e293b',
                   p: 0.8,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Box
@@ -140,6 +151,9 @@ const About = () => {
                     borderRadius: 3,
                     overflow: 'hidden',
                     boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     '&::before': {
                       content: '""',
                       position: 'absolute',
@@ -154,12 +168,14 @@ const About = () => {
                     },
                   }}
                 >
-                  <img
+                  <Box
+                    component="img"
                     src={aboutImage}
                     alt="About Selva"
-                    style={{
-                      width: 'auto',
-                      height: '550px',
+                    sx={{
+                      width: '100%',
+                      maxWidth: '100%',
+                      height: { xs: '400px', sm: '500px', md: '550px' },
                       display: 'block',
                       objectFit: 'cover',
                       filter: 'grayscale(15%) contrast(1.1) brightness(0.95)',
