@@ -1,3 +1,17 @@
+// Import award images
+import award1 from '../assets/images/1677170354507.jpg?url';
+import award2 from '../assets/images/1677170002100.jpg?url';
+import award3 from '../assets/images/1725700924030.jpg?url';
+import award4 from '../assets/images/InShot_20250118_114231130.jpg?url';
+
+// Import work images
+import work1 from '../assets/images/work1.jpg?url';
+import work2 from '../assets/images/work2.jpg?url';
+import work3 from '../assets/images/work3.jpg?url';
+import work4 from '../assets/images/work4.jpg?url';
+import work5 from '../assets/images/work5.jpg?url';
+import work6 from '../assets/images/work6.jpg?url';
+
 // Portfolio data centralized for easy maintenance
 export const personalInfo = {
   name: "Selva Santhanam",
@@ -103,27 +117,27 @@ export const projects = [
 export const awards = [
   {
     title: "Code Buster",
-    image: "/src/assets/images/1677170354507.jpg",
+    image: award1,
   },
   {
     title: "Code Translation",
-    image: "/src/assets/images/1677170002100.jpg",
+    image: award2,
   },
   {
     title: "Web Maker",
-    image: "/src/assets/images/1725700924030.jpg",
+    image: award3,
   },
   {
     title: "Full-Stack Hero",
-    image: "/src/assets/images/InShot_20250118_114231130.jpg",
+    image: award4,
   },
 ];
 
 export const workImages = [
-  "/src/assets/images/work1.jpg",
-  "/src/assets/images/work2.jpg",
-  "/src/assets/images/work3.jpg",
-  "/src/assets/images/work4.jpg",
-  "/src/assets/images/work5.jpg",
-  "/src/assets/images/work6.jpg",
+  work1,
+  work2,
+  work3,
+  work4,
+  work5,
+  work6,
 ];
