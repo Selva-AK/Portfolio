@@ -12,6 +12,26 @@ import work4 from '../assets/images/work4.jpg?url';
 import work5 from '../assets/images/work5.jpg?url';
 import work6 from '../assets/images/work6.jpg?url';
 
+// Import project images
+import spendwise1 from '../assets/images/spendWise/img_1.jfif?url';
+import spendwise2 from '../assets/images/spendWise/img_2.jfif?url';
+import spendwise3 from '../assets/images/spendWise/img_3.jfif?url';
+import spendwise4 from '../assets/images/spendWise/img_4.jfif?url';
+import spendwise5 from '../assets/images/spendWise/img_5.jfif?url';
+import spendwise6 from '../assets/images/spendWise/img_6.jfif?url';
+import spendwise7 from '../assets/images/spendWise/img_7.jfif?url';
+
+import dressstore1 from '../assets/images/dressStore/img_1.png?url';
+import dressstore2 from '../assets/images/dressStore/img_2.png?url';
+import dressstore3 from '../assets/images/dressStore/img_3.png?url';
+import dressstore4 from '../assets/images/dressStore/img_4.png?url';
+import dressstore5 from '../assets/images/dressStore/img_5.png?url';
+
+import uptime1 from '../assets/images/uptime_monitor/img_1.png?url';
+import uptime2 from '../assets/images/uptime_monitor/img_2.png?url';
+import uptime3 from '../assets/images/uptime_monitor/img_3.png?url';
+import uptime4 from '../assets/images/uptime_monitor/img_4.png?url';
+
 // Portfolio data centralized for easy maintenance
 export const personalInfo = {
   name: "Selva Santhanam",
@@ -85,32 +105,71 @@ export const experience = [
 
 export const projects = [
   {
-    title: "Tourism Website",
+    id: 1,
+    name: "SpendWise",
     description:
-      "Developed a dynamic tourism website with Node.js and Express. Features included spot discovery, media uploads, and an admin panel for easy form modifications.",
-    link: "https://github.com/Selva-AK/Video-uploading-task.git",
-    type: "github",
+      "SpendWise is a mobile expense tracking application that helps users manage their daily spending efficiently. Users can set spending limits, track expenses, visualize data using pie charts, and export reports for better financial planning.",
+    shortDescription: "Mobile app to track and manage daily expenses.",
+    technologies: ["React Native"],
+    features: [
+      "Track daily expenses",
+      "Set expense limits",
+      "View expenses in pie chart",
+      "Export reports",
+      "Simple and user-friendly UI",
+    ],
+    images: [spendwise1, spendwise2, spendwise3, spendwise4, spendwise5, spendwise6, spendwise7],
+    thumbnail: spendwise1,
+    liveUrl: "",
+    githubUrl: "",
+    status: "Completed",
+    duration: "1 Month",
+    year: 2025,
   },
   {
-    title: "College Management System",
+    id: 2,
+    name: "Dress Store",
     description:
-      "Built a comprehensive college management system using PHP and MySQL. Streamlined admission processes and department management.",
-    link: "https://github.com/Selva-AK/CollegeManagementSystem.git",
-    type: "github",
+      "Dress Store is an e-commerce web application where users can browse products based on categories, add items to cart or wishlist, and purchase them easily. It includes authentication and push notification features.",
+    shortDescription: "E-commerce platform for browsing and purchasing clothes.",
+    technologies: ["Next.js", "MySQL", "Tailwind CSS"],
+    features: [
+      "Browse products by category",
+      "Add to cart and wishlist",
+      "User login & signup",
+      "Push notifications",
+      "Purchase products",
+      "Responsive design",
+    ],
+    images: [dressstore1, dressstore2, dressstore3, dressstore4, dressstore5],
+    thumbnail: dressstore1,
+    liveUrl: "",
+    githubUrl: "",
+    status: "Completed",
+    duration: "2 Months",
+    year: 2025,
   },
   {
-    title: "Webhook App",
+    id: 3,
+    name: "Uptime Monitor",
     description:
-      "Overview: This Express web application receives data into the app server for an account and sends it across different platforms (destinations) using webhook URLs.",
-    link: "https://github.com/Selva-AK/NodeJS-webhook-app",
-    type: "github",
-  },
-  {
-    title: "Thirukkural Chatbot",
-    description:
-      "Developed a chatbot powered by AWS Titan and ChatGPT to answer questions about Thirukkural. The application helps users explore and understand the ancient Tamil literature with real-time responses.",
-    link: "https://d1lej5tbmppkkm.cloudfront.net/",
-    type: "live",
+      "Uptime Monitor is a web application that allows users to monitor their websites. Users can set monitoring intervals, and the system checks the website status regularly and provides reports about uptime and performance.",
+    shortDescription: "Track website uptime and performance.",
+    technologies: ["Next.js", "MySQL", "Tailwind CSS"],
+    features: [
+      "User login & signup",
+      "Add websites to monitor",
+      "Set monitoring interval",
+      "Track uptime and downtime",
+      "View performance reports",
+    ],
+    images: [uptime1, uptime2, uptime3, uptime4],
+    thumbnail: uptime1,
+    liveUrl: "",
+    githubUrl: "",
+    status: "Completed",
+    duration: "1.5 Months",
+    year: 2025,
   },
 ];
 
