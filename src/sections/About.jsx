@@ -5,22 +5,25 @@ import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
 import Badge from '../components/ui/Badge';
 import Reveal from '../components/ui/Reveal';
+import Parallax from '../components/ui/Parallax';
 import aboutImage from '../assets/images/about.jpg?url';
 
 const About = () => (
-  <section id="about" className="relative overflow-hidden py-24 md:py-32">
+  <section id="about" className="relative overflow-hidden py-16 md:py-24">
+    <Parallax offset={60} className="pointer-events-none absolute -right-24 top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
+
     <Container>
       <SectionHeading eyebrow="About" title="Get to know me" />
 
       <div className="flex flex-col items-center gap-12 md:flex-row md:items-center md:gap-16">
         <Reveal variants={slideRight} className="w-full max-w-sm shrink-0 md:max-w-md">
-          <div className="overflow-hidden rounded-2xl border border-border shadow-lg">
+          <Parallax offset={30} className="overflow-hidden rounded-2xl border border-border shadow-lg">
             <img
               src={aboutImage}
               alt={`About ${personalInfo.name}`}
               className="h-[420px] w-full object-cover md:h-[480px]"
             />
-          </div>
+          </Parallax>
         </Reveal>
 
         <Reveal variants={slideUp} className="flex-1">

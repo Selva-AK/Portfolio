@@ -3,7 +3,7 @@ import { cn } from '../../utils/cn';
 const SectionHeading = ({ eyebrow, title, description, align = 'center', className }) => (
   <div
     className={cn(
-      'mb-14 md:mb-20',
+      'mb-10 md:mb-14',
       align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl text-left',
       className
     )}

@@ -4,6 +4,7 @@ import { personalInfo } from '../utils/data';
 import { fadeIn, slideUp, slideLeft } from '../utils/animations';
 import Container from '../components/ui/Container';
 import Button from '../components/ui/Button';
+import Parallax from '../components/ui/Parallax';
 import { GithubIcon, LinkedinIcon } from '../components/ui/icons';
 import profileImage from '../assets/images/1690812853497.png?url';
 
@@ -18,7 +19,8 @@ const Hero = () => (
     id="home"
     className="relative flex min-h-screen items-center overflow-hidden pt-24 md:pt-0"
   >
-    <div className="pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
+    <Parallax offset={90} className="pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
+    <Parallax offset={50} className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
 
     <Container>
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-8">
@@ -62,13 +64,13 @@ const Hero = () => (
           variants={slideLeft}
           className="flex justify-center md:justify-end"
         >
-          <div className="rounded-full bg-accent p-2">
+          <Parallax offset={25} className="rounded-full bg-accent p-2">
             <img
               src={profileImage}
               alt={personalInfo.name}
               className="h-64 w-64 rounded-full object-cover sm:h-80 sm:w-80 md:h-96 md:w-96"
             />
-          </div>
+          </Parallax>
         </motion.div>
       </div>
     </Container>

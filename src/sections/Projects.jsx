@@ -297,7 +297,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="work" className="relative overflow-hidden py-24 md:py-32">
+    <section id="work" className="relative overflow-hidden py-16 md:py-24">
       <Container>
         <div ref={headerRef} className="mb-16 text-center">
           <motion.div

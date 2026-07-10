@@ -8,6 +8,7 @@ import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import { Input, Textarea } from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
+import Parallax from '../components/ui/Parallax';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -42,7 +43,9 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden py-24 md:py-32">
+    <section id="contact" className="relative overflow-hidden py-16 md:py-24">
+      <Parallax offset={70} className="pointer-events-none absolute right-[-10%] top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
+
       <Container className="max-w-2xl">
         <SectionHeading
           eyebrow="Get in Touch"

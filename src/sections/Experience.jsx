@@ -8,6 +8,7 @@ import SectionHeading from '../components/ui/SectionHeading';
 import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Reveal from '../components/ui/Reveal';
+import Parallax from '../components/ui/Parallax';
 
 const TimelineCard = ({ item }) => {
   const Icon = item.type === 'work' ? Briefcase : GraduationCap;
@@ -31,7 +32,9 @@ const TimelineCard = ({ item }) => {
 };
 
 const Experience = () => (
-  <section id="experience" className="relative overflow-hidden bg-surface/40 py-24 md:py-32">
+  <section id="experience" className="relative overflow-hidden bg-surface/40 py-16 md:py-24">
+    <Parallax offset={70} className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
+
     <Container>
       <SectionHeading eyebrow="My Journey" title="Experience & Education" />
 

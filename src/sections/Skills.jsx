@@ -7,11 +7,14 @@ import SectionHeading from '../components/ui/SectionHeading';
 import Card from '../components/ui/Card';
 import Reveal from '../components/ui/Reveal';
 import ProgressBar from '../components/ui/ProgressBar';
+import Parallax from '../components/ui/Parallax';
 
 const categoryIcons = [Code2, Server, Cloud, Sparkles];
 
 const Skills = () => (
-  <section id="skills" className="relative overflow-hidden bg-surface/40 py-24 md:py-32">
+  <section id="skills" className="relative overflow-hidden bg-surface/40 py-16 md:py-24">
+    <Parallax offset={70} className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
+
     <Container>
       <SectionHeading
         eyebrow="Tech Stack"
