@@ -8,13 +8,13 @@ const PROMPT = 'guest@portfolio';
 const commands = {
   help: () => [
     'Available commands:',
-    '  about      ->  who I am',
-    '  skills       ->  tech I work with',
-    '  experience   ->  where I’ve worked',
-    '  projects     ->  things I’ve built',
-    '  contact      ->  how to reach me',
-    '  resume       ->  open my resume',
-    '  clear        ->  clear the terminal',
+    '  about        —  professional summary',
+    '  skills       —  technical skills',
+    '  experience   —  professional experience',
+    '  projects     —  selected projects',
+    '  contact      —  contact information',
+    '  resume       —  open résumé',
+    '  clear        —  clear terminal output',
   ],
   about: () => [personalInfo.bio],
   skills: () =>
@@ -27,13 +27,13 @@ const commands = {
   contact: () => [`Email: ${personalInfo.email}`, `LinkedIn: ${personalInfo.social.linkedin}`],
   resume: () => {
     window.open(personalInfo.resumeUrl, '_blank', 'noopener');
-    return ['Opening resume in a new tab...'];
+    return ['Opening résumé in a new tab...'];
   },
   whoami: () => [personalInfo.name],
-  'sudo make coffee': () => ['Sorry, I’m a developer, not a barista. ☕'],
+  'sudo make coffee': () => ['That command is outside the scope of this terminal.'],
 };
 
-const WELCOME = [`Welcome. Type "help" to see what I can do.`];
+const WELCOME = ['Welcome. Type "help" to view available commands.'];
 
 const InteractiveTerminal = ({ className }) => {
   const [history, setHistory] = useState(() => WELCOME.map((text) => ({ type: 'output', text })));

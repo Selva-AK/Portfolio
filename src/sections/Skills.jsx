@@ -63,14 +63,14 @@ const Skills = () => {
 
         <div className="mx-auto mb-10 max-w-sm">
           <div className="relative">
-            <Input
+            {/* <Input
               icon={Search}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search a skill..."
               aria-label="Search skills"
               className="pr-9"
-            />
+            /> */}
             {query && (
               <button
                 type="button"

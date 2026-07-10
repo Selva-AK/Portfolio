@@ -61,13 +61,13 @@ const Contact = () => {
 
       if (!response.ok) throw new Error('Failed to send message');
 
-      setToast({ open: true, message: 'Message sent successfully! I will get back to you soon.', variant: 'success' });
+      setToast({ open: true, message: 'Your message has been sent successfully. I will respond as soon as possible.', variant: 'success' });
       setFormData({ name: '', email: '', message: '' });
       setCelebrate((c) => c + 1);
       setSent(true);
       setTimeout(() => setSent(false), 2500);
     } catch {
-      setToast({ open: true, message: 'Failed to send message. Please try again.', variant: 'error' });
+      setToast({ open: true, message: 'Unable to send your message at this time. Please try again.', variant: 'error' });
     } finally {
       setLoading(false);
       setTimeout(() => setToast((prev) => ({ ...prev, open: false })), 6000);
@@ -103,7 +103,7 @@ const Contact = () => {
           <SectionHeading
             eyebrow="Get in Touch"
             title="Contact Me"
-            description="Have a question or want to work together? Drop me a message."
+            description="Have a question or a potential opportunity in mind? I would welcome the chance to connect."
           />
 
           <button

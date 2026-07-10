@@ -105,7 +105,7 @@ const Experience = () => (
           rotate={-3}
           cursor={false}
         />
-        <SectionHeading eyebrow="My Journey" title="Experience & Education" />
+        <SectionHeading eyebrow="Career Timeline" title="Experience & Education" />
       </div>
 
       <Reveal variants={staggerContainer}>

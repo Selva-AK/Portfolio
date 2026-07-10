@@ -62,7 +62,7 @@ const About = () => {
       <Parallax offset={60} className="pointer-events-none absolute -right-24 top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
 
       <Container>
-        <SectionHeading eyebrow="About" title="Get to know me" />
+        <SectionHeading eyebrow="About" title="Professional Background" />
 
         <Reveal variants={staggerContainer} className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <PhotoCell />
@@ -70,7 +70,7 @@ const About = () => {
           <motion.div variants={staggerItem} className="md:col-span-2 md:row-span-2">
             <Card className="flex h-full flex-col justify-center gap-4 p-6 md:p-8">
               <span className="text-sm font-semibold uppercase tracking-wider text-accent">
-                Bio
+                Professional Summary
               </span>
               <p className="text-lg leading-relaxed text-muted-foreground">{personalInfo.bio}</p>
             </Card>
@@ -102,16 +102,16 @@ const About = () => {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
             </span>
-            <p className="text-sm font-semibold text-foreground">Available for work</p>
-            <p className="text-xs text-muted-foreground">Open to full-time &amp; freelance</p>
+            <p className="text-sm font-semibold text-foreground">Open to Opportunities</p>
+            <p className="text-xs text-muted-foreground">Full-time &amp; contract engagements</p>
           </BentoCell>
 
           <BentoCell>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10 text-accent">
               <Sparkles className="h-4 w-4" />
             </div>
-            <p className="text-sm font-semibold text-foreground">What I value</p>
-            <p className="text-xs text-muted-foreground">Clean code &amp; great UX</p>
+            <p className="text-sm font-semibold text-foreground">Engineering Philosophy</p>
+            <p className="text-xs text-muted-foreground">Clean, maintainable code &amp; thoughtful UX</p>
           </BentoCell>
         </Reveal>
       </Container>

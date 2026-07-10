@@ -116,7 +116,8 @@ const Hero = () => {
 
         <div className="mt-16 flex flex-col items-center gap-3">
           <span className="font-mono text-xs text-muted-foreground">
-            psst — try typing <span className="text-accent">help</span> below
+            Explore the interactive terminal below — type{' '}
+            <span className="text-accent">help</span> to begin
           </span>
           <InteractiveTerminal />
         </div>

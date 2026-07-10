@@ -55,7 +55,7 @@ const Footer = () => {
         </p>
 
         <p className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-          Built with React, Tailwind &amp; a bit of
+          Designed &amp; built with React and Tailwind CSS
           <motion.span
             animate={{ scale: [1, 1.25, 1] }}
             transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
