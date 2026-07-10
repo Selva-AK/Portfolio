@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { personalInfo } from '../../utils/data';
 import { cn } from '../../utils/cn';
@@ -39,6 +39,8 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { hidden, scrolled } = useHideOnScroll();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 40, restDelta: 0.001 });
 
   const handleNavClick = (href) => {
     const element = document.querySelector(href);
@@ -131,6 +133,10 @@ const Navbar = () => {
             </div>
           </div>
         </Container>
+        <motion.div
+          style={{ scaleX }}
+          className="h-0.5 origin-left bg-accent"
+        />
       </motion.header>
 
       <AnimatePresence>

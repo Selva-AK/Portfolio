@@ -26,6 +26,7 @@ const blurbs = {
 const TimelineCard = ({ item }) => {
   const [expanded, setExpanded] = useState(false);
   const Icon = item.type === 'work' ? Briefcase : GraduationCap;
+  const isCurrent = /present/i.test(item.date);
 
   return (
     <Card hover className="overflow-hidden p-5">
@@ -35,11 +36,24 @@ const TimelineCard = ({ item }) => {
         aria-expanded={expanded}
         className="flex w-full items-center gap-3 text-left focus-visible:outline-none"
       >
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
           <Icon className="h-5 w-5" />
+          {isCurrent && (
+            <span className="absolute -right-1 -top-1 flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full border-2 border-surface bg-emerald-500" />
+            </span>
+          )}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-semibold text-foreground">{item.title}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="truncate font-semibold text-foreground">{item.title}</h3>
+            {isCurrent && (
+              <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+                Current
+              </span>
+            )}
+          </div>
           <p className="truncate text-sm text-muted-foreground">{item.role}</p>
         </div>
         <motion.span

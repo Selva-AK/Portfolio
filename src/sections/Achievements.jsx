@@ -19,7 +19,7 @@ const achievementLines = [
   [{ t: '}', c: 'text-foreground' }],
 ];
 
-const AchievementCard = ({ item, onOpen }) => {
+const AchievementCard = ({ item, onOpen, onUnlock }) => {
   const [flipped, setFlipped] = useState(false);
   const [everFlipped, setEverFlipped] = useState(false);
   const [celebrate, setCelebrate] = useState(0);
@@ -30,6 +30,7 @@ const AchievementCard = ({ item, onOpen }) => {
     if (!everFlipped) {
       setEverFlipped(true);
       setCelebrate((c) => c + 1);
+      onUnlock(item.title);
     }
   };
 
@@ -58,6 +59,9 @@ const AchievementCard = ({ item, onOpen }) => {
               <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/40 group-hover:opacity-100">
                 <ZoomIn className="h-8 w-8 text-white" />
               </div>
+              {!everFlipped && (
+                <span className="absolute left-2 top-2 h-2 w-2 rounded-full bg-accent shadow-[0_0_0_3px_var(--background)]" />
+              )}
               <button
                 type="button"
                 onClick={handleFlip}
@@ -92,6 +96,14 @@ const AchievementCard = ({ item, onOpen }) => {
 
 const Achievements = () => {
   const [selected, setSelected] = useState(null);
+  const [unlocked, setUnlocked] = useState(() => new Set());
+
+  const handleUnlock = (title) => {
+    setUnlocked((prev) => new Set(prev).add(title));
+  };
+
+  const progress = (unlocked.size / achievements.length) * 100;
+  const allUnlocked = unlocked.size === achievements.length;
 
   return (
     <section id="achievements" className="relative overflow-hidden py-6">
@@ -113,10 +125,29 @@ const Achievements = () => {
           />
         </div>
 
+        <div className="mx-auto -mt-4 mb-10 flex max-w-xs flex-col items-center gap-2">
+          <span className="font-mono text-xs text-muted-foreground">
+            {allUnlocked ? (
+              <span className="text-emerald-500 dark:text-emerald-400">all unlocked! 🎉</span>
+            ) : (
+              <>
+                {unlocked.size}/{achievements.length} unlocked
+              </>
+            )}
+          </span>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-hover">
+            <motion.div
+              className="h-full bg-accent"
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          </div>
+        </div>
+
         <Reveal variants={staggerContainer}>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {achievements.map((item) => (
-              <AchievementCard key={item.title} item={item} onOpen={setSelected} />
+              <AchievementCard key={item.title} item={item} onOpen={setSelected} onUnlock={handleUnlock} />
             ))}
           </div>
         </Reveal>

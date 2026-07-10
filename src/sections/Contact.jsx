@@ -14,6 +14,9 @@ import Parallax from '../components/ui/Parallax';
 import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 import MagneticWrap from '../components/ui/MagneticWrap';
 import ConfettiBurst from '../components/ui/ConfettiBurst';
+import { cn } from '../utils/cn';
+
+const MAX_MESSAGE_LENGTH = 500;
 
 const apiLines = [
   [{ t: 'POST', c: 'text-accent' }, { t: ' /api/contact', c: 'text-foreground' }],
@@ -135,16 +138,31 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                 />
-                <Textarea
-                  icon={MessageSquare}
-                  name="message"
-                  placeholder="Your Message"
-                  aria-label="Your Message"
-                  rows={6}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                />
+                <div>
+                  <Textarea
+                    icon={MessageSquare}
+                    name="message"
+                    placeholder="Your Message"
+                    aria-label="Your Message"
+                    rows={6}
+                    maxLength={MAX_MESSAGE_LENGTH}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  />
+                  <p
+                    className={cn(
+                      'mt-1.5 text-right text-xs font-medium transition-colors',
+                      formData.message.length >= MAX_MESSAGE_LENGTH
+                        ? 'text-red-500'
+                        : formData.message.length >= MAX_MESSAGE_LENGTH * 0.85
+                          ? 'text-amber-500'
+                          : 'text-muted-foreground'
+                    )}
+                  >
+                    {formData.message.length}/{MAX_MESSAGE_LENGTH}
+                  </p>
+                </div>
                 <div className="relative">
                   <ConfettiBurst triggerKey={celebrate} />
                   <MagneticWrap strength={0.15} className="block w-full">

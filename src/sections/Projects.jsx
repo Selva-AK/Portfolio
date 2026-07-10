@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { cn } from '../utils/cn';
 import { AnimatePresence, motion, useInView, useScroll } from 'framer-motion';
 import {
   ArrowRight,
@@ -8,6 +9,7 @@ import {
   ChevronRight,
   Clock,
   ExternalLink,
+  Heart,
 } from 'lucide-react';
 import { projects } from '../utils/data';
 import Container from '../components/ui/Container';
@@ -25,12 +27,52 @@ const lsLines = [
   [{ t: 'uptime-monitor/', c: 'text-emerald-500 dark:text-emerald-400' }],
 ];
 
+const LIKED_KEY = 'liked-projects';
+
+const readLikedIds = () => {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || '[]'));
+  } catch {
+    return new Set();
+  }
+};
+
 const ShowcaseRow = ({ project, index, onOpen }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-120px' });
   const reverse = index % 2 === 1;
   const indexLabel = String(index + 1).padStart(2, '0');
   const { rotateX, rotateY, spotlight, onMouseMove, onMouseLeave } = useTilt();
+  const [hovered, setHovered] = useState(false);
+  const [previewIndex, setPreviewIndex] = useState(0);
+  const [liked, setLiked] = useState(() => readLikedIds().has(project.id));
+
+  useEffect(() => {
+    if (!hovered || project.images.length <= 1) return undefined;
+    const id = setInterval(() => {
+      setPreviewIndex((i) => (i + 1) % project.images.length);
+    }, 900);
+    return () => clearInterval(id);
+  }, [hovered, project.images.length]);
+
+  const handleMouseEnter = () => {
+    setPreviewIndex(0);
+    setHovered(true);
+  };
+
+  const toggleLike = (e) => {
+    e.stopPropagation();
+    setLiked((prev) => {
+      const next = !prev;
+      const ids = readLikedIds();
+      if (next) ids.add(project.id);
+      else ids.delete(project.id);
+      localStorage.setItem(LIKED_KEY, JSON.stringify([...ids]));
+      return next;
+    });
+  };
+
+  const displayedImage = hovered ? project.images[previewIndex] : project.thumbnail;
 
   return (
     <div ref={ref} className="relative z-10 py-10 md:py-14">
@@ -53,7 +95,11 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
 
             <div
               onMouseMove={onMouseMove}
-              onMouseLeave={onMouseLeave}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={() => {
+                onMouseLeave();
+                setHovered(false);
+              }}
               onClick={() => onOpen(project)}
               role="button"
               tabIndex={0}
@@ -69,18 +115,55 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
                     <span className="ml-3 rounded-md bg-background px-2 py-0.5 font-mono text-[0.65rem] tracking-wide text-muted-foreground">
                       {project.name.toLowerCase().replace(/\s+/g, '-')}.app
                     </span>
+                    <button
+                      type="button"
+                      onClick={toggleLike}
+                      aria-label={liked ? 'Unlike project' : 'Like project'}
+                      aria-pressed={liked}
+                      className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <motion.span
+                        key={liked ? 'liked' : 'unliked'}
+                        initial={{ scale: 0.6 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                        className="inline-flex"
+                      >
+                        <Heart className={liked ? 'h-3.5 w-3.5 fill-accent text-accent' : 'h-3.5 w-3.5'} />
+                      </motion.span>
+                    </button>
                   </div>
 
                   <div className="relative flex h-64 items-center justify-center overflow-hidden bg-black sm:h-80 md:h-96">
                     <div
                       className="absolute inset-0 scale-110 bg-cover bg-center opacity-40 blur-2xl"
-                      style={{ backgroundImage: `url(${project.thumbnail})` }}
+                      style={{ backgroundImage: `url(${displayedImage})` }}
                     />
-                    <img
-                      src={project.thumbnail}
-                      alt={project.name}
-                      className="relative max-h-[92%] max-w-[92%] rounded-md object-contain shadow-2xl"
-                    />
+                    <AnimatePresence mode="sync">
+                      <motion.img
+                        key={displayedImage}
+                        src={displayedImage}
+                        alt={project.name}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute left-1/2 top-1/2 max-h-[92%] max-w-[92%] -translate-x-1/2 -translate-y-1/2 rounded-md object-contain shadow-2xl"
+                      />
+                    </AnimatePresence>
+                    {hovered && project.images.length > 1 && (
+                      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1">
+                        {project.images.map((img, i) => (
+                          <span
+                            key={img}
+                            className={cn(
+                              'h-1 rounded-full transition-all',
+                              i === previewIndex ? 'w-4 bg-accent' : 'w-1 bg-white/30'
+                            )}
+                          />
+                        ))}
+                      </div>
+                    )}
                     <motion.div
                       className="pointer-events-none absolute inset-0 mix-blend-overlay"
                       style={{ backgroundImage: spotlight }}

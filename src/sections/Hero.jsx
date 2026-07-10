@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Cloud, Code2, Mail, Server } from 'lucide-react';
+import { ChevronDown, Cloud, Code2, Mail, Server } from 'lucide-react';
 import { personalInfo, experience } from '../utils/data';
 import { fadeIn, slideUp, slideLeft } from '../utils/animations';
 import useTypewriter from '../utils/useTypewriter';
@@ -9,6 +9,7 @@ import Parallax from '../components/ui/Parallax';
 import FloatingBadge from '../components/ui/FloatingBadge';
 import MagneticWrap from '../components/ui/MagneticWrap';
 import InteractiveTerminal from '../components/ui/InteractiveTerminal';
+import CursorSpotlight from '../components/ui/CursorSpotlight';
 import { GithubIcon, LinkedinIcon } from '../components/ui/icons';
 import profileImage from '../assets/images/1690812853497.png?url';
 
@@ -36,6 +37,7 @@ const Hero = () => {
     >
       <Parallax offset={90} className="pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
       <Parallax offset={50} className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
+      <CursorSpotlight />
 
       <Container>
         <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-8">
@@ -119,6 +121,17 @@ const Hero = () => {
           <InteractiveTerminal />
         </div>
       </Container>
+
+      <motion.button
+        type="button"
+        onClick={() => document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' })}
+        aria-label="Scroll to About section"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-4 inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <ChevronDown className="h-5 w-5" />
+      </motion.button>
     </section>
   );
 };
