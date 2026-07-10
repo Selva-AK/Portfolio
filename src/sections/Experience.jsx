@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { Briefcase, Calendar, GraduationCap } from 'lucide-react';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Briefcase, Calendar, ChevronDown, GraduationCap } from 'lucide-react';
 import { experience } from '../utils/data';
 import { staggerContainer, staggerItem } from '../utils/animations';
 import { cn } from '../utils/cn';
@@ -17,23 +18,61 @@ const gitLogLines = [
   [{ t: '8b21e4a ', c: 'text-emerald-500 dark:text-emerald-400' }, { t: 'cert: AWS Developer', c: 'text-muted-foreground' }],
 ];
 
+const blurbs = {
+  work: 'Collaborated with cross-functional teams to design, build, and ship production features — from planning through deployment.',
+  education: 'Built a strong foundation in computer science fundamentals, data structures, and software development practices.',
+};
+
 const TimelineCard = ({ item }) => {
+  const [expanded, setExpanded] = useState(false);
   const Icon = item.type === 'work' ? Briefcase : GraduationCap;
+
   return (
-    <Card hover className="p-5">
-      <div className="mb-3 flex items-center gap-3">
+    <Card hover className="overflow-hidden p-5">
+      <button
+        type="button"
+        onClick={() => setExpanded((e) => !e)}
+        aria-expanded={expanded}
+        className="flex w-full items-center gap-3 text-left focus-visible:outline-none"
+      >
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
           <Icon className="h-5 w-5" />
         </div>
-        <div>
-          <h3 className="font-semibold text-foreground">{item.title}</h3>
-          <p className="text-sm text-muted-foreground">{item.role}</p>
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate font-semibold text-foreground">{item.title}</h3>
+          <p className="truncate text-sm text-muted-foreground">{item.role}</p>
         </div>
+        <motion.span
+          animate={{ rotate: expanded ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="shrink-0 text-muted-foreground"
+        >
+          <ChevronDown className="h-4 w-4" />
+        </motion.span>
+      </button>
+
+      <div className="mt-3">
+        <Badge>
+          <Calendar className="h-3.5 w-3.5" />
+          {item.date}
+        </Badge>
       </div>
-      <Badge>
-        <Calendar className="h-3.5 w-3.5" />
-        {item.date}
-      </Badge>
+
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <p className="mt-4 border-t border-border pt-4 text-sm leading-relaxed text-muted-foreground">
+              {blurbs[item.type]}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Card>
   );
 };

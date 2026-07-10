@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Loader2, Mail, MessageSquare, Send, User } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, Copy, Loader2, Mail, MessageSquare, Send, User } from 'lucide-react';
+import { personalInfo } from '../utils/data';
 import { slideUp } from '../utils/animations';
 import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
@@ -10,6 +12,8 @@ import { Input, Textarea } from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
 import Parallax from '../components/ui/Parallax';
 import FloatingCodeCard from '../components/ui/FloatingCodeCard';
+import MagneticWrap from '../components/ui/MagneticWrap';
+import ConfettiBurst from '../components/ui/ConfettiBurst';
 
 const apiLines = [
   [{ t: 'POST', c: 'text-accent' }, { t: ' /api/contact', c: 'text-foreground' }],
@@ -23,6 +27,19 @@ const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ open: false, message: '', variant: 'success' });
+  const [celebrate, setCelebrate] = useState(0);
+  const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable — silently ignore
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,6 +60,9 @@ const Contact = () => {
 
       setToast({ open: true, message: 'Message sent successfully! I will get back to you soon.', variant: 'success' });
       setFormData({ name: '', email: '', message: '' });
+      setCelebrate((c) => c + 1);
+      setSent(true);
+      setTimeout(() => setSent(false), 2500);
     } catch {
       setToast({ open: true, message: 'Failed to send message. Please try again.', variant: 'error' });
     } finally {
@@ -83,6 +103,15 @@ const Contact = () => {
             description="Have a question or want to work together? Drop me a message."
           />
 
+          <button
+            type="button"
+            onClick={handleCopyEmail}
+            className="mx-auto -mt-8 mb-14 flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none"
+          >
+            {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? 'Copied to clipboard!' : personalInfo.email}
+          </button>
+
           <Reveal variants={slideUp}>
             <Card className="p-6 md:p-10">
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -116,19 +145,52 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                 />
-                <Button type="submit" size="lg" disabled={loading} className="w-full">
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="h-4 w-4" />
-                    </>
-                  )}
-                </Button>
+                <div className="relative">
+                  <ConfettiBurst triggerKey={celebrate} />
+                  <MagneticWrap strength={0.15} className="block w-full">
+                    <Button type="submit" size="lg" disabled={loading} className="w-full overflow-hidden">
+                      <AnimatePresence mode="wait" initial={false}>
+                        {loading ? (
+                          <motion.span
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="inline-flex items-center gap-2"
+                          >
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Sending...
+                          </motion.span>
+                        ) : sent ? (
+                          <motion.span
+                            key="sent"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="inline-flex items-center gap-2"
+                          >
+                            <Check className="h-4 w-4" />
+                            Sent!
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="idle"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="inline-flex items-center gap-2"
+                          >
+                            Send Message
+                            <Send className="h-4 w-4" />
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </Button>
+                  </MagneticWrap>
+                </div>
               </form>
             </Card>
           </Reveal>

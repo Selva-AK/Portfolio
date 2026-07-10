@@ -1,4 +1,5 @@
-import { Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Heart, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '../ui/icons';
 import { personalInfo } from '../../utils/data';
 
@@ -11,7 +12,13 @@ const socialLinks = [
 const Footer = () => (
   <footer className="border-t border-border bg-surface/40">
     <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-10 md:px-8">
-      <span className="text-lg font-bold tracking-tight text-foreground">{personalInfo.name}</span>
+      <motion.span
+        whileHover={{ rotate: [0, -4, 4, -4, 0] }}
+        transition={{ duration: 0.4 }}
+        className="inline-block cursor-default text-lg font-bold tracking-tight text-foreground"
+      >
+        {personalInfo.name}
+      </motion.span>
 
       <div className="flex items-center gap-2">
         {socialLinks.map(({ label, href, icon: Icon }) => (
@@ -30,6 +37,17 @@ const Footer = () => (
 
       <p className="text-sm text-muted-foreground">
         © {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
+      </p>
+
+      <p className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+        Built with React, Tailwind &amp; a bit of
+        <motion.span
+          animate={{ scale: [1, 1.25, 1] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+          className="inline-flex text-accent"
+        >
+          <Heart className="h-3.5 w-3.5 fill-current" />
+        </motion.span>
       </p>
     </div>
   </footer>
