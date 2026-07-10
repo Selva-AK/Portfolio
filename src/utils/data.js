@@ -4,14 +4,6 @@ import award2 from '../assets/images/1677170002100.jpg?url';
 import award3 from '../assets/images/1725700924030.jpg?url';
 import award4 from '../assets/images/InShot_20250118_114231130.jpg?url';
 
-// Import work images
-import work1 from '../assets/images/work1.jpg?url';
-import work2 from '../assets/images/work2.jpg?url';
-import work3 from '../assets/images/work3.jpg?url';
-import work4 from '../assets/images/work4.jpg?url';
-import work5 from '../assets/images/work5.jpg?url';
-import work6 from '../assets/images/work6.jpg?url';
-
 // Import project images
 import spendwise1 from '../assets/images/spendWise/img_1.jfif?url';
 import spendwise2 from '../assets/images/spendWise/img_2.jfif?url';
@@ -42,8 +34,6 @@ export const personalInfo = {
   social: {
     linkedin: "https://www.linkedin.com/in/selva-santhanam",
     github: "https://www.github.com/Selva-AK",
-    facebook: "https://www.facebook.com/ajithselva.selva.319",
-    instagram: "https://www.instagram.com/__the_lone_wolf____/",
   },
   bio: "I am currently based in Chennai, Tamil Nadu, India. I hold a Bachelor of Computer Applications (BCA) degree from M.R. Arts & Science College, Ariyalur, which I completed in May 2023 with a CGPA of 8 out of 10.",
 };
@@ -173,7 +163,7 @@ export const projects = [
   },
 ];
 
-export const awards = [
+export const achievements = [
   {
     title: "Code Buster",
     image: award1,
@@ -190,13 +180,4 @@ export const awards = [
     title: "Full-Stack Hero",
     image: award4,
   },
-];
-
-export const workImages = [
-  work1,
-  work2,
-  work3,
-  work4,
-  work5,
-  work6,
 ];

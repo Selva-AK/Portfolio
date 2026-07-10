@@ -1,39 +1,30 @@
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Box } from '@mui/material';
-import theme from './theme/theme';
-import GlobalStyles from './theme/GlobalStyles.jsx';
-import Navbar from './components/Navbar';
-import ScrollToTop from './components/ScrollToTop';
+import { ThemeProvider } from './theme/ThemeContext';
+import Navbar from './components/layout/Navbar';
+import ScrollToTop from './components/layout/ScrollToTop';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Experience from './sections/Experience';
 import Projects from './sections/Projects';
-import Awards from './sections/Awards';
+import Achievements from './sections/Achievements';
 import Contact from './sections/Contact';
-import Footer from './components/Footer';
-import SplashCursor from './components/SplashCursor'
+import Footer from './components/layout/Footer';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-
-      <SplashCursor />
-      <CssBaseline />
-      <GlobalStyles />
-      <Box sx={{ position: 'relative' }}>
-        <Navbar />
+    <ThemeProvider>
+      <Navbar />
+      <main>
         <Hero />
         <About />
         <Skills />
         <Experience />
         <Projects />
-        <Awards />
+        <Achievements />
         <Contact />
-        <Footer />
-        <ScrollToTop />
-      </Box>
+      </main>
+      <Footer />
+      <ScrollToTop />
     </ThemeProvider>
   );
 }

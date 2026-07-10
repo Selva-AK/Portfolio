@@ -1,233 +1,78 @@
-import { Box, Container, Typography, Button, IconButton, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import EmailIcon from '@mui/icons-material/Email';
+import { Mail } from 'lucide-react';
 import { personalInfo } from '../utils/data';
-import { fadeIn, slideUp, slideLeft, slideRight } from '../utils/animations';
+import { fadeIn, slideUp, slideLeft } from '../utils/animations';
+import Container from '../components/ui/Container';
+import Button from '../components/ui/Button';
+import { GithubIcon, LinkedinIcon } from '../components/ui/icons';
 import profileImage from '../assets/images/1690812853497.png?url';
 
-const Hero = () => {
-  return (
-    <Box
-      id="home"
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-        position: 'relative',
-        overflow: 'hidden',
-        pt: { xs: 10, md: 0 },
-      }}
-    >
-      {/* Animated background elements */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '10%',
-          right: '10%',
-          width: '400px',
-          height: '400px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          animation: 'float 6s ease-in-out infinite',
-          '@keyframes float': {
-            '0%, 100%': { transform: 'translateY(0px)' },
-            '50%': { transform: 'translateY(-30px)' },
-          },
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: '10%',
-          left: '10%',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          animation: 'float 8s ease-in-out infinite',
-        }}
-      />
+const socialLinks = [
+  { label: 'LinkedIn', href: personalInfo.social.linkedin, icon: LinkedinIcon },
+  { label: 'Email', href: `mailto:${personalInfo.email}`, icon: Mail },
+  { label: 'GitHub', href: personalInfo.social.github, icon: GithubIcon },
+];
 
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-            gap: 4,
-            alignItems: 'center',
-          }}
-        >
-          {/* Left Content */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
+const Hero = () => (
+  <section
+    id="home"
+    className="relative flex min-h-screen items-center overflow-hidden pt-24 md:pt-0"
+  >
+    <div className="pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
+
+    <Container>
+      <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-8">
+        <motion.div initial="hidden" animate="visible" variants={fadeIn} className="flex flex-col gap-6">
+          <motion.h1
+            variants={slideUp}
+            className="text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl"
           >
-            <Stack spacing={3}>
-              <motion.div variants={slideUp}>
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontWeight: 700,
-                    mb: 2,
-                  }}
-                >
-                  Hi,
-                  <br />
-                  I'm{' '}
-                  <Box
-                    component="span"
-                    sx={{
-                      background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    {personalInfo.name}
-                  </Box>
-                  <br />
-                  <Typography
-                    component="span"
-                    variant="h2"
-                    sx={{
-                      color: 'primary.light',
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {personalInfo.title}
-                  </Typography>
-                </Typography>
-              </motion.div>
+            Hi, I&apos;m <span className="text-accent">{personalInfo.name}</span>
+            <br />
+            <span className="font-mono text-2xl text-muted-foreground sm:text-3xl">
+              {personalInfo.title}
+            </span>
+          </motion.h1>
 
-              <motion.div variants={slideUp}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  href={personalInfo.resumeUrl}
-                  target="_blank"
-                  sx={{
-                    background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
-                    color: 'white',
-                    px: 4,
-                    py: 1.5,
-                    fontSize: '1.1rem',
-                    fontWeight: 600,
-                    boxShadow: '0 8px 24px rgba(99, 102, 241, 0.3)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #4f46e5 0%, #db2777 100%)',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 12px 32px rgba(99, 102, 241, 0.4)',
-                    },
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  View Resume
-                </Button>
-              </motion.div>
-
-              <motion.div variants={slideUp}>
-                <Stack direction="row" spacing={2}>
-                  <IconButton
-                    component="a"
-                    href={personalInfo.social.linkedin}
-                    target="_blank"
-                    sx={{
-                      color: 'primary.main',
-                      bgcolor: 'rgba(99, 102, 241, 0.1)',
-                      '&:hover': {
-                        bgcolor: 'rgba(99, 102, 241, 0.2)',
-                        transform: 'translateY(-4px)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <LinkedInIcon />
-                  </IconButton>
-                  <IconButton
-                    component="a"
-                    href={`mailto:${personalInfo.email}`}
-                    sx={{
-                      color: 'secondary.main',
-                      bgcolor: 'rgba(236, 72, 153, 0.1)',
-                      '&:hover': {
-                        bgcolor: 'rgba(236, 72, 153, 0.2)',
-                        transform: 'translateY(-4px)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <EmailIcon />
-                  </IconButton>
-                  <IconButton
-                    component="a"
-                    href={personalInfo.social.github}
-                    target="_blank"
-                    sx={{
-                      color: 'text.primary',
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.2)',
-                        transform: 'translateY(-4px)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <GitHubIcon />
-                  </IconButton>
-                </Stack>
-              </motion.div>
-            </Stack>
+          <motion.div variants={slideUp}>
+            <Button as="a" href={personalInfo.resumeUrl} target="_blank" rel="noreferrer" size="lg">
+              View Resume
+            </Button>
           </motion.div>
 
-          {/* Right Content - Profile Image */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={slideLeft}
-          >
-            <Box
-              sx={{
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  position: 'relative',
-                  width: { xs: '280px', sm: '350px', md: '400px' },
-                  height: { xs: '280px', sm: '350px', md: '400px' },
-                  borderRadius: '50%',
-                  padding: '8px',
-                  background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
-                }}
+          <motion.div variants={slideUp} className="flex items-center gap-3">
+            {socialLinks.map(({ label, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('mailto:') ? undefined : '_blank'}
+                rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                aria-label={label}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-all hover:-translate-y-1 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                {/* Profile Image */}
-                <Box
-                  component="img"
-                  src={profileImage}
-                  alt="Selva"
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    display: 'block',
-                  }}
-                />
-              </Box>
-            </Box>
+                <Icon className="h-5 w-5" />
+              </a>
+            ))}
           </motion.div>
-        </Box>
-      </Container>
-    </Box>
-  );
-};
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={slideLeft}
+          className="flex justify-center md:justify-end"
+        >
+          <div className="rounded-full bg-accent p-2">
+            <img
+              src={profileImage}
+              alt={personalInfo.name}
+              className="h-64 w-64 rounded-full object-cover sm:h-80 sm:w-80 md:h-96 md:w-96"
+            />
+          </div>
+        </motion.div>
+      </div>
+    </Container>
+  </section>
+);
 
 export default Hero;
