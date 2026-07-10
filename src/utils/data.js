@@ -24,6 +24,14 @@ import uptime2 from '../assets/images/uptime_monitor/img_2.png?url';
 import uptime3 from '../assets/images/uptime_monitor/img_3.png?url';
 import uptime4 from '../assets/images/uptime_monitor/img_4.png?url';
 
+import ventureTrack1 from '../assets/images/venturesTrack/venture-track-dashboard.png?url';
+import ventureTrack2 from '../assets/images/venturesTrack/venture-track-login.png?url';
+import ventureTrack3 from '../assets/images/venturesTrack/venture-track-task.png?url';
+import ventureTrack4 from '../assets/images/venturesTrack/venture-track-timer.png?url';
+import ventureTrack5 from '../assets/images/venturesTrack/venture-track-user.png?url';
+import ventureTrack6 from '../assets/images/venturesTrack/venture-track-report.png?url';
+import ventureTrack7 from '../assets/images/venturesTrack/venture-track-settings.png?url';
+
 // Portfolio data centralized for easy maintenance
 export const personalInfo = {
   name: "Selva Santhanam",
@@ -133,7 +141,7 @@ export const projects = [
     ],
     images: [dressstore1, dressstore2, dressstore3, dressstore4, dressstore5],
     thumbnail: dressstore1,
-    liveUrl: "",
+    liveUrl: "https://boutique-kodambakam.vercel.app/",
     githubUrl: "",
     status: "Completed",
     duration: "2 Months",
@@ -160,6 +168,28 @@ export const projects = [
     status: "Completed",
     duration: "1.5 Months",
     year: 2025,
+  },
+  {
+    id: 4,
+    name: "VentureTrack",
+    description:
+      "Uptime Monitor is a web application that similar to a project management tool, allowing users to track the progress of their ventures. Users can set milestones, assign tasks, and monitor the overall performance of their projects.",
+    shortDescription: "Track venture progress and manage tasks effectively.",
+    technologies: ["Next.js", "MySQL", "Tailwind CSS"],
+    features: [
+      "User login & signup",
+      "Add ventures to track",
+      "Set milestones and tasks",
+      "Monitor venture performance",
+      "View progress reports",
+    ],
+    images: [ventureTrack1, ventureTrack2, ventureTrack3, ventureTrack4, ventureTrack5, ventureTrack6, ventureTrack7],
+    thumbnail: ventureTrack1,
+    liveUrl: "https://project-management-gold-psi.vercel.app/",
+    githubUrl: "",
+    status: "Completed",
+    duration: "1 Day",
+    year: 2026,
   },
 ];
 
