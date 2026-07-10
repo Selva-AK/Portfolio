@@ -17,7 +17,7 @@ const codeLines = [
 ];
 
 const About = () => (
-  <section id="about" className="relative overflow-hidden py-16 md:py-24">
+  <section id="about" className="relative overflow-hidden py-6">
     <Parallax offset={60} className="pointer-events-none absolute -right-24 top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
 
     <Container>

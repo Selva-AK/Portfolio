@@ -19,7 +19,7 @@ const terminalLines = [
 ];
 
 const Skills = () => (
-  <section id="skills" className="relative overflow-hidden bg-surface/40 py-16 md:py-24">
+  <section id="skills" className="relative overflow-hidden bg-surface/40 py-6">
     <Parallax offset={70} className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
     <Sparkles className="pointer-events-none absolute right-[8%] top-[12%] hidden h-24 w-24 -rotate-12 text-accent/[0.07] lg:block" />
     <Code2 className="pointer-events-none absolute bottom-[10%] left-[6%] hidden h-28 w-28 rotate-12 text-accent/[0.06] lg:block" />

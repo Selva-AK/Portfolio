@@ -72,7 +72,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden py-16 md:py-24">
+    <section id="contact" className="relative overflow-hidden py-6">
       <Parallax offset={70} className="pointer-events-none absolute right-[-10%] top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
 
       <Container>

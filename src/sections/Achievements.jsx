@@ -94,7 +94,7 @@ const Achievements = () => {
   const [selected, setSelected] = useState(null);
 
   return (
-    <section id="achievements" className="relative overflow-hidden py-16 md:py-24">
+    <section id="achievements" className="relative overflow-hidden py-6">
       <Parallax offset={60} className="pointer-events-none absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
 
       <Container>

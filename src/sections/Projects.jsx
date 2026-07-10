@@ -305,7 +305,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="work" className="relative overflow-hidden py-16 md:py-24">
+    <section id="work" className="relative overflow-hidden py-6">
       <Container>
         <div className="relative mb-16">
           <FloatingCodeCard

@@ -78,7 +78,7 @@ const TimelineCard = ({ item }) => {
 };
 
 const Experience = () => (
-  <section id="experience" className="relative overflow-hidden bg-surface/40 py-16 md:py-24">
+  <section id="experience" className="relative overflow-hidden bg-surface/40 py-6">
     <Parallax offset={70} className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
 
     <Container>
