@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '../ui/icons';
 import { personalInfo } from '../../utils/data';
+import useLocalTime from '../../utils/useLocalTime';
 
 const socialLinks = [
   { label: 'LinkedIn', href: personalInfo.social.linkedin, icon: LinkedinIcon },
@@ -11,26 +11,9 @@ const socialLinks = [
 ];
 
 const TIME_ZONE = 'Asia/Kolkata';
-const timeFormatter = new Intl.DateTimeFormat('en-US', {
-  timeZone: TIME_ZONE,
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-});
-
-function useLocalTime() {
-  const [time, setTime] = useState(() => timeFormatter.format(new Date()));
-
-  useEffect(() => {
-    const id = setInterval(() => setTime(timeFormatter.format(new Date())), 30000);
-    return () => clearInterval(id);
-  }, []);
-
-  return time;
-}
 
 const Footer = () => {
-  const localTime = useLocalTime();
+  const localTime = useLocalTime(TIME_ZONE);
   const city = personalInfo.location.split(',')[0];
 
   return (
