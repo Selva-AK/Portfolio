@@ -6,138 +6,322 @@ import {
   Chip,
   IconButton,
   Dialog,
-  DialogContent,
   useTheme,
   useMediaQuery,
   Button,
 } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  useMotionTemplate,
+  useScroll,
+} from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { projects } from '../utils/data';
 
-const ProjectCard = ({ project, onOpen }) => {
+const ShowcaseRow = ({ project, index, onOpen }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: true, margin: '-120px' });
+  const reverse = index % 2 === 1;
+  const accent = reverse ? '#ec4899' : '#6366f1';
+  const accentLight = reverse ? '#fbcfe8' : '#a5b4fc';
+  const indexLabel = String(index + 1).padStart(2, '0');
+
+  const mvX = useMotionValue(0.5);
+  const mvY = useMotionValue(0.5);
+  const springOpts = { stiffness: 200, damping: 25, mass: 0.5 };
+  const rotateX = useSpring(useTransform(mvY, [0, 1], [10, -10]), springOpts);
+  const rotateY = useSpring(useTransform(mvX, [0, 1], [-10, 10]), springOpts);
+  const spotX = useTransform(mvX, (v) => `${v * 100}%`);
+  const spotY = useTransform(mvY, (v) => `${v * 100}%`);
+  const spotlight = useMotionTemplate`radial-gradient(480px circle at ${spotX} ${spotY}, rgba(255,255,255,0.14), transparent 70%)`;
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mvX.set((e.clientX - rect.left) / rect.width);
+    mvY.set((e.clientY - rect.top) / rect.height);
+  };
+  const handleMouseLeave = () => {
+    mvX.set(0.5);
+    mvY.set(0.5);
+  };
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
-      <Box
-        onClick={() => onOpen(project)}
-        sx={{
-          position: 'relative',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          cursor: 'pointer',
-          background: 'rgba(30, 41, 59, 0.4)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          '&:hover': {
-            transform: 'translateY(-10px)',
-            border: '1px solid rgba(99, 102, 241, 0.4)',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.2)',
-            '& .project-image': {
-              transform: 'scale(1.1)',
-            },
-            '& .overlay': {
-              opacity: 1,
-            },
-          },
-        }}
-      >
-        <Box sx={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
-          <Box
-            component="img"
-            src={project.thumbnail}
-            alt={project.name}
-            className="project-image"
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
-          />
-          <Box
-            className="overlay"
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent)',
-              opacity: 0.6,
-              transition: 'opacity 0.4s ease',
-              display: 'flex',
-              alignItems: 'flex-end',
-              p: 3,
-            }}
+    <Box ref={ref} sx={{ position: 'relative', py: { xs: 6, md: 8 }, zIndex: 1 }}>
+      <Grid container spacing={{ xs: 4, md: 8 }} alignItems="center">
+        {/* Visual panel */}
+        <Grid item xs={12} md={6} order={{ xs: 1, md: reverse ? 2 : 1 }}>
+          <motion.div
+            initial={{ opacity: 0, x: reverse ? 60 : -60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
           >
-            <Typography variant="caption" sx={{ color: 'primary.light', fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase' }}>
-              View Details
-            </Typography>
-          </Box>
-          <Chip
-            label={project.status}
-            size="small"
-            sx={{
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              bgcolor: 'rgba(99, 102, 241, 0.9)',
-              color: 'white',
-              fontWeight: 600,
-              backdropFilter: 'blur(4px)',
-            }}
-          />
-        </Box>
-
-        <Box sx={{ p: 4, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, color: 'white' }}>
-            {project.name}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3, lineClamp: 2, display: '-webkit-box', overflow: 'hidden', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }}>
-            {project.shortDescription}
-          </Typography>
-
-          <Box sx={{ mt: 'auto', display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {project.technologies.slice(0, 3).map((tech) => (
-              <Chip
-                key={tech}
-                label={tech}
-                size="small"
+            <Box sx={{ position: 'relative', perspective: '1400px' }}>
+              {/* Ghost index number */}
+              <Typography
+                aria-hidden
                 sx={{
-                  bgcolor: 'rgba(255, 255, 255, 0.05)',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  fontSize: '0.7rem',
+                  position: 'absolute',
+                  top: { xs: '-2.5rem', md: '-3.5rem' },
+                  [reverse ? 'right' : 'left']: { xs: 0, md: '-1.5rem' },
+                  fontSize: { xs: '5rem', md: '8rem' },
+                  fontWeight: 900,
+                  lineHeight: 1,
+                  color: 'transparent',
+                  WebkitTextStroke: '1px rgba(255,255,255,0.08)',
+                  zIndex: 0,
+                  userSelect: 'none',
+                  pointerEvents: 'none',
                 }}
-              />
-            ))}
-            {project.technologies.length > 3 && (
-              <Typography variant="caption" sx={{ alignSelf: 'center', color: 'text.disabled', ml: 0.5 }}>
-                +{project.technologies.length - 3}
+              >
+                {indexLabel}
               </Typography>
-            )}
-          </Box>
-        </Box>
-      </Box>
-    </motion.div>
+
+              <Box
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => onOpen(project)}
+                sx={{ position: 'relative', zIndex: 1, cursor: 'pointer' }}
+              >
+                <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      background: 'rgba(15, 23, 42, 0.6)',
+                      boxShadow: '0 30px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03)',
+                      transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                      '&:hover': {
+                        borderColor: `${accent}55`,
+                        boxShadow: `0 30px 60px -20px rgba(0,0,0,0.7), 0 0 40px -8px ${accent}55`,
+                      },
+                    }}
+                  >
+                    {/* Browser chrome */}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        px: 2,
+                        height: 38,
+                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        background: 'rgba(255,255,255,0.02)',
+                      }}
+                    >
+                      <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#ef4444' }} />
+                      <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#f59e0b' }} />
+                      <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#22c55e' }} />
+                      <Box
+                        sx={{
+                          ml: 1.5,
+                          px: 1.5,
+                          py: 0.3,
+                          borderRadius: '6px',
+                          bgcolor: 'rgba(255,255,255,0.04)',
+                          color: 'rgba(255,255,255,0.35)',
+                          fontSize: '0.65rem',
+                          fontFamily: 'monospace',
+                          letterSpacing: 0.5,
+                        }}
+                      >
+                        {project.name.toLowerCase().replace(/\s+/g, '-')}.app
+                      </Box>
+                    </Box>
+
+                    {/* Image stage */}
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        height: { xs: 260, sm: 340, md: 400 },
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: '#050810',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundImage: `url(${project.thumbnail})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          filter: 'blur(24px) brightness(0.35)',
+                          transform: 'scale(1.2)',
+                        }}
+                      />
+                      <Box
+                        component="img"
+                        src={project.thumbnail}
+                        alt={project.name}
+                        sx={{
+                          position: 'relative',
+                          maxWidth: '92%',
+                          maxHeight: '92%',
+                          objectFit: 'contain',
+                          borderRadius: '8px',
+                          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+                        }}
+                      />
+                      {/* Mouse spotlight */}
+                      <motion.div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundImage: spotlight,
+                          mixBlendMode: 'overlay',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </motion.div>
+              </Box>
+            </Box>
+          </motion.div>
+        </Grid>
+
+        {/* Text panel */}
+        <Grid item xs={12} md={6} order={{ xs: 2, md: reverse ? 1 : 2 }}>
+          <motion.div
+            initial={{ opacity: 0, x: reverse ? -60 : 60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
+          >
+            <Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+                <Box sx={{ width: 32, height: 2, background: accent }} />
+                <Typography
+                  sx={{ color: accent, fontWeight: 800, letterSpacing: 3, fontSize: '0.8rem', textTransform: 'uppercase' }}
+                >
+                  Project {indexLabel}
+                </Typography>
+              </Box>
+
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 900,
+                  fontSize: { xs: '2.2rem', md: '2.8rem' },
+                  mb: 2,
+                  lineHeight: 1.1,
+                  background: `linear-gradient(135deg, #f8fafc 0%, ${accentLight} 120%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                {project.name}
+              </Typography>
+
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2.5, mb: 3 }}>
+                <Chip
+                  label={project.status}
+                  size="small"
+                  sx={{ bgcolor: `${accent}22`, color: accentLight, border: `1px solid ${accent}44`, fontWeight: 700 }}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
+                  <EventIcon sx={{ fontSize: 16 }} />
+                  <Typography variant="caption">{project.year}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
+                  <AccessTimeIcon sx={{ fontSize: 16 }} />
+                  <Typography variant="caption">{project.duration}</Typography>
+                </Box>
+              </Box>
+
+              <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8, mb: 3 }}>
+                {project.description}
+              </Typography>
+
+              <Grid container spacing={1.2} sx={{ mb: 3.5 }}>
+                {project.features.slice(0, 4).map((feature, i) => (
+                  <Grid item xs={12} sm={6} key={i}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                      <CheckCircleOutlineIcon sx={{ color: accent, fontSize: 18, mt: 0.2 }} />
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {feature}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 4 }}>
+                {project.technologies.map((tech) => (
+                  <Chip
+                    key={tech}
+                    label={tech}
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(255,255,255,0.04)',
+                      color: 'rgba(255,255,255,0.75)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      fontWeight: 600,
+                    }}
+                  />
+                ))}
+              </Box>
+
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                <Button
+                  onClick={() => onOpen(project)}
+                  endIcon={<ArrowForwardIosIcon sx={{ fontSize: '0.75rem !important' }} />}
+                  sx={{
+                    borderRadius: '10px',
+                    py: 1.3,
+                    px: 3,
+                    fontWeight: 700,
+                    color: '#0f172a',
+                    background: `linear-gradient(135deg, ${accent} 0%, ${accentLight} 100%)`,
+                    boxShadow: `0 8px 24px ${accent}44`,
+                    '&:hover': {
+                      background: `linear-gradient(135deg, ${accent} 0%, ${accentLight} 100%)`,
+                      boxShadow: `0 12px 32px ${accent}66`,
+                      transform: 'translateY(-2px)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  Case Study
+                </Button>
+                {project.githubUrl && (
+                  <IconButton
+                    href={project.githubUrl}
+                    target="_blank"
+                    sx={{ border: '1px solid rgba(255,255,255,0.15)', color: 'white', '&:hover': { borderColor: accent, color: accent } }}
+                  >
+                    <GitHubIcon />
+                  </IconButton>
+                )}
+                {project.liveUrl && (
+                  <IconButton
+                    href={project.liveUrl}
+                    target="_blank"
+                    sx={{ border: '1px solid rgba(255,255,255,0.15)', color: 'white', '&:hover': { borderColor: accent, color: accent } }}
+                  >
+                    <OpenInNewIcon />
+                  </IconButton>
+                )}
+              </Box>
+            </Box>
+          </motion.div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
@@ -444,8 +628,10 @@ const ProjectModal = ({ project, open, onClose }) => {
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+  const headerRef = useRef(null);
+  const rowsRef = useRef(null);
+  const isHeaderInView = useInView(headerRef, { once: true, margin: '-100px' });
+  const { scrollYProgress } = useScroll({ target: rowsRef, offset: ['start 0.75', 'end 0.35'] });
 
   const handleOpen = (project) => {
     setSelectedProject(project);
@@ -491,12 +677,33 @@ const Projects = () => {
           zIndex: 0,
         }}
       />
+      {/* Giant watermark */}
+      <Typography
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          top: { xs: '8%', md: '4%' },
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: { xs: '6rem', md: '11rem' },
+          fontWeight: 900,
+          letterSpacing: 4,
+          color: 'transparent',
+          WebkitTextStroke: '1px rgba(255,255,255,0.04)',
+          whiteSpace: 'nowrap',
+          zIndex: 0,
+          userSelect: 'none',
+          pointerEvents: 'none',
+        }}
+      >
+        SELECTED WORK
+      </Typography>
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Box sx={{ mb: 10, textAlign: 'center' }}>
+        <Box ref={headerRef} sx={{ mb: { xs: 6, md: 4 }, textAlign: 'center' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
             <Typography
@@ -509,7 +716,7 @@ const Projects = () => {
                 display: 'block',
               }}
             >
-              PORTFOLIO
+              PORTFOLIO / ( {String(projects.length).padStart(2, '0')} PROJECTS )
             </Typography>
             <Typography
               variant="h2"
@@ -529,15 +736,50 @@ const Projects = () => {
           </motion.div>
         </Box>
 
-        <Grid container spacing={4} ref={containerRef}>
-          {projects.map((project) => (
-            <Grid item xs={12} sm={6} md={4} key={project.id}>
-              <ProjectCard project={project} onOpen={handleOpen} />
-            </Grid>
-          ))}
-        </Grid>
+        {/* Rows with a scroll-linked spine down the center */}
+        <Box ref={rowsRef} sx={{ position: 'relative' }}>
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: '50%',
+              width: '2px',
+              background: 'rgba(255,255,255,0.06)',
+              transform: 'translateX(-50%)',
+              zIndex: 0,
+            }}
+          />
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              position: 'absolute',
+              top: 0,
+              left: '50%',
+              width: '2px',
+              height: '100%',
+              zIndex: 0,
+            }}
+          >
+            <motion.div
+              style={{
+                width: '2px',
+                height: '100%',
+                background: 'linear-gradient(180deg, #6366f1 0%, #ec4899 100%)',
+                transform: 'translateX(-50%)',
+                transformOrigin: 'top',
+                scaleY: scrollYProgress,
+              }}
+            />
+          </Box>
 
-        <Box sx={{ mt: 10, textAlign: 'center' }}>
+          {projects.map((project, index) => (
+            <ShowcaseRow key={project.id} project={project} index={index} onOpen={handleOpen} />
+          ))}
+        </Box>
+
+        <Box sx={{ mt: { xs: 4, md: 6 }, textAlign: 'center' }}>
           <Button
             href="https://github.com/Selva-AK"
             target="_blank"
