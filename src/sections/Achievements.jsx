@@ -9,6 +9,13 @@ import Card from '../components/ui/Card';
 import Reveal from '../components/ui/Reveal';
 import { Dialog, DialogContent, DialogTitle } from '../components/ui/Dialog';
 import Parallax from '../components/ui/Parallax';
+import FloatingCodeCard from '../components/ui/FloatingCodeCard';
+
+const achievementLines = [
+  [{ t: 'if', c: 'text-accent' }, { t: ' (achievement.', c: 'text-foreground' }, { t: 'unlocked', c: 'text-emerald-500 dark:text-emerald-400' }, { t: ') {', c: 'text-foreground' }],
+  [{ t: '  celebrate();', c: 'text-muted-foreground' }],
+  [{ t: '}', c: 'text-foreground' }],
+];
 
 const Achievements = () => {
   const [selected, setSelected] = useState(null);
@@ -18,11 +25,20 @@ const Achievements = () => {
       <Parallax offset={60} className="pointer-events-none absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
 
       <Container>
-        <SectionHeading
-          eyebrow="Achievements"
-          title="Certifications & Recognition"
-          description="A selection of certifications and competition wins earned along the way."
-        />
+        <div className="relative">
+          <FloatingCodeCard
+            filename="unlock.js"
+            lines={achievementLines}
+            className="-right-4 top-0 xl:right-8"
+            floatDelay={0.6}
+            rotate={-3}
+          />
+          <SectionHeading
+            eyebrow="Achievements"
+            title="Certifications & Recognition"
+            description="A selection of certifications and competition wins earned along the way."
+          />
+        </div>
 
         <Reveal variants={staggerContainer}>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

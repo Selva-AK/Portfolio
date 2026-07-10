@@ -6,7 +6,15 @@ import SectionHeading from '../components/ui/SectionHeading';
 import Badge from '../components/ui/Badge';
 import Reveal from '../components/ui/Reveal';
 import Parallax from '../components/ui/Parallax';
+import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 import aboutImage from '../assets/images/about.jpg?url';
+
+const codeLines = [
+  [{ t: '// about.js', c: 'text-muted-foreground' }],
+  [{ t: 'location', c: 'text-foreground' }, { t: ": '", c: 'text-muted-foreground' }, { t: 'Chennai, IN', c: 'text-emerald-500 dark:text-emerald-400' }, { t: "',", c: 'text-muted-foreground' }],
+  [{ t: 'degree', c: 'text-foreground' }, { t: ": '", c: 'text-muted-foreground' }, { t: 'BCA', c: 'text-emerald-500 dark:text-emerald-400' }, { t: "',", c: 'text-muted-foreground' }],
+  [{ t: 'status', c: 'text-foreground' }, { t: ": '", c: 'text-muted-foreground' }, { t: 'open to work', c: 'text-emerald-500 dark:text-emerald-400' }, { t: "',", c: 'text-muted-foreground' }],
+];
 
 const About = () => (
   <section id="about" className="relative overflow-hidden py-16 md:py-24">
@@ -16,7 +24,14 @@ const About = () => (
       <SectionHeading eyebrow="About" title="Get to know me" />
 
       <div className="flex flex-col items-center gap-12 md:flex-row md:items-center md:gap-16">
-        <Reveal variants={slideRight} className="w-full max-w-sm shrink-0 md:max-w-md">
+        <Reveal variants={slideRight} className="relative w-full max-w-sm shrink-0 md:max-w-md">
+          <FloatingCodeCard
+            filename="about.js"
+            lines={codeLines}
+            className="-right-8 -top-10"
+            floatDelay={0.3}
+            rotate={4}
+          />
           <Parallax offset={30} className="overflow-hidden rounded-2xl border border-border shadow-lg">
             <img
               src={aboutImage}

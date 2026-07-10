@@ -15,7 +15,15 @@ import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '../components/ui/Dialog';
 import useTilt from '../components/ui/useTilt';
+import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 import { GithubIcon } from '../components/ui/icons';
+
+const lsLines = [
+  [{ t: '$ ', c: 'text-accent' }, { t: 'ls projects/', c: 'text-foreground' }],
+  [{ t: 'spendwise/', c: 'text-emerald-500 dark:text-emerald-400' }],
+  [{ t: 'dress-store/', c: 'text-emerald-500 dark:text-emerald-400' }],
+  [{ t: 'uptime-monitor/', c: 'text-emerald-500 dark:text-emerald-400' }],
+];
 
 const ShowcaseRow = ({ project, index, onOpen }) => {
   const ref = useRef(null);
@@ -299,23 +307,33 @@ const Projects = () => {
   return (
     <section id="work" className="relative overflow-hidden py-16 md:py-24">
       <Container>
-        <div ref={headerRef} className="mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-wider text-accent">
-              Portfolio &middot; {String(projects.length).padStart(2, '0')} Projects
-            </span>
-            <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Featured Projects
-            </h2>
-            <p className="mx-auto max-w-xl text-lg text-muted-foreground">
-              A collection of selected works focusing on performance, user experience, and modern
-              web technologies.
-            </p>
-          </motion.div>
+        <div className="relative mb-16">
+          <FloatingCodeCard
+            filename="shell"
+            lines={lsLines}
+            className="-right-4 top-0 xl:right-8"
+            floatDelay={0.5}
+            rotate={3}
+            cursor={false}
+          />
+          <div ref={headerRef} className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-wider text-accent">
+                Portfolio &middot; {String(projects.length).padStart(2, '0')} Projects
+              </span>
+              <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+                Featured Projects
+              </h2>
+              <p className="mx-auto max-w-xl text-lg text-muted-foreground">
+                A collection of selected works focusing on performance, user experience, and modern
+                web technologies.
+              </p>
+            </motion.div>
+          </div>
         </div>
 
         <div ref={rowsRef} className="relative">

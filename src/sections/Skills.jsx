@@ -8,19 +8,38 @@ import Card from '../components/ui/Card';
 import Reveal from '../components/ui/Reveal';
 import ProgressBar from '../components/ui/ProgressBar';
 import Parallax from '../components/ui/Parallax';
+import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 
 const categoryIcons = [Code2, Server, Cloud, Sparkles];
+
+const terminalLines = [
+  [{ t: '$ ', c: 'text-accent' }, { t: 'whoami', c: 'text-foreground' }],
+  [{ t: '> ', c: 'text-muted-foreground' }, { t: 'full-stack developer', c: 'text-emerald-500 dark:text-emerald-400' }],
+  [{ t: '$ ', c: 'text-accent' }, { t: 'skills --list', c: 'text-foreground' }],
+];
 
 const Skills = () => (
   <section id="skills" className="relative overflow-hidden bg-surface/40 py-16 md:py-24">
     <Parallax offset={70} className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
+    <Sparkles className="pointer-events-none absolute right-[8%] top-[12%] hidden h-24 w-24 -rotate-12 text-accent/[0.07] lg:block" />
+    <Code2 className="pointer-events-none absolute bottom-[10%] left-[6%] hidden h-28 w-28 rotate-12 text-accent/[0.06] lg:block" />
 
     <Container>
-      <SectionHeading
-        eyebrow="Tech Stack"
-        title="Skills & Expertise"
-        description="Crafting digital experiences with modern, production-grade technologies."
-      />
+      <div className="relative">
+        <FloatingCodeCard
+          filename="terminal"
+          lines={terminalLines}
+          className="-right-4 top-0 xl:right-4"
+          floatDelay={0.5}
+          rotate={3}
+          cursor
+        />
+        <SectionHeading
+          eyebrow="Tech Stack"
+          title="Skills & Expertise"
+          description="Crafting digital experiences with modern, production-grade technologies."
+        />
+      </div>
 
       <div className="flex flex-col gap-14">
         {skills.map((category, categoryIndex) => {

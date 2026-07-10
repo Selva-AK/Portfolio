@@ -9,6 +9,13 @@ import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Reveal from '../components/ui/Reveal';
 import Parallax from '../components/ui/Parallax';
+import FloatingCodeCard from '../components/ui/FloatingCodeCard';
+
+const gitLogLines = [
+  [{ t: '$ ', c: 'text-accent' }, { t: 'git log --oneline -3', c: 'text-foreground' }],
+  [{ t: 'a3f21c9 ', c: 'text-emerald-500 dark:text-emerald-400' }, { t: 'feat: joined ImagiNET', c: 'text-muted-foreground' }],
+  [{ t: '8b21e4a ', c: 'text-emerald-500 dark:text-emerald-400' }, { t: 'cert: AWS Developer', c: 'text-muted-foreground' }],
+];
 
 const TimelineCard = ({ item }) => {
   const Icon = item.type === 'work' ? Briefcase : GraduationCap;
@@ -36,7 +43,17 @@ const Experience = () => (
     <Parallax offset={70} className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
 
     <Container>
-      <SectionHeading eyebrow="My Journey" title="Experience & Education" />
+      <div className="relative">
+        <FloatingCodeCard
+          filename="log.sh"
+          lines={gitLogLines}
+          className="-right-4 top-0 xl:right-8"
+          floatDelay={0.4}
+          rotate={-3}
+          cursor={false}
+        />
+        <SectionHeading eyebrow="My Journey" title="Experience & Education" />
+      </div>
 
       <Reveal variants={staggerContainer}>
         <ol className="relative">
