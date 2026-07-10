@@ -1,6 +1,9 @@
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from './theme/ThemeContext';
 import Navbar from './components/layout/Navbar';
 import ScrollToTop from './components/layout/ScrollToTop';
+import BootScreen from './components/ui/BootScreen';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
@@ -10,9 +13,23 @@ import Achievements from './sections/Achievements';
 import Contact from './sections/Contact';
 import Footer from './components/layout/Footer';
 
+const VISITED_KEY = 'portfolio-visited';
+
 function App() {
+  const [booting, setBooting] = useState(
+    () => typeof window !== 'undefined' && !window.localStorage.getItem(VISITED_KEY)
+  );
+
+  const handleBootComplete = () => {
+    window.localStorage.setItem(VISITED_KEY, '1');
+    setBooting(false);
+  };
+
   return (
     <ThemeProvider>
+      <AnimatePresence>
+        {booting && <BootScreen onComplete={handleBootComplete} />}
+      </AnimatePresence>
       <Navbar />
       <main>
         <Hero />
