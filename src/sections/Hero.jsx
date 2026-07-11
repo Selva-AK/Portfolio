@@ -33,7 +33,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="mt-24 relative flex min-h-screen flex-col items-center justify-center gap-16 overflow-hidden pb-16 pt-24 md:pt-0"
+      className="mt-2 md:mt-20 relative flex min-h-screen flex-col items-center justify-center gap-16 overflow-hidden pb-16 pt-24 md:pt-0"
     >
       <Parallax offset={90} className="pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
       <Parallax offset={50} className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
