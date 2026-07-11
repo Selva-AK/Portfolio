@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme/ThemeContext';
 import Navbar from './components/layout/Navbar';
 import ScrollToTop from './components/layout/ScrollToTop';
 import BootScreen from './components/ui/BootScreen';
+import CustomCursor from './components/ui/CustomCursor';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <CustomCursor />
       <AnimatePresence>
         {booting && <BootScreen onComplete={handleBootComplete} />}
       </AnimatePresence>
