@@ -43,41 +43,60 @@ const Hero = () => {
         <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-8">
           <motion.div initial="hidden" animate="visible" variants={fadeIn} className="flex flex-col gap-6">
             <motion.div variants={slideUp}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground">
-                <span className="relative flex h-2 w-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-surface/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
                 </span>
-                Available for new opportunities
+                Available for high-impact projects
               </span>
             </motion.div>
 
             <motion.h1
               variants={slideUp}
-              className="text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl"
+              className="text-4xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
             >
-              Hi, I&apos;m <span className="text-accent">{personalInfo.name}</span>
+              Hi, I&apos;m <span className="bg-gradient-to-r from-indigo-500 via-sky-400 to-cyan-400 bg-clip-text text-transparent">{personalInfo.name}</span>
               <br />
-              <span className="inline-flex items-baseline font-mono text-2xl text-muted-foreground sm:text-3xl">
-                &lt;{typedRole}
+              <span className="inline-flex items-baseline font-mono text-2xl font-bold text-muted-foreground sm:text-3xl md:text-4xl">
+                &lt;<span className="text-accent">{typedRole}</span>
                 <motion.span
                   animate={{ opacity: [1, 1, 0, 0] }}
                   transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
-                  className="mx-0.5 h-[0.9em] w-[2px] translate-y-0.5 bg-accent"
+                  className="mx-0.5 h-[0.9em] w-[3px] translate-y-0.5 bg-cyan-400"
                 />
                 /&gt;
               </span>
             </motion.h1>
 
-            <motion.div variants={slideUp}>
+            <motion.p variants={slideUp} className="max-w-xl text-base text-muted-foreground sm:text-lg leading-relaxed">
+              Full-Stack & AWS Cloud Developer engineering scalable web platforms, high-performance APIs, and interactive digital products.
+            </motion.p>
+
+            <motion.div variants={slideUp} className="flex flex-wrap items-center gap-4">
               <MagneticWrap>
-                <Button as="a" href={personalInfo.resumeUrl} target="_blank" rel="noreferrer" size="lg">
+                <Button as="a" href={personalInfo.resumeUrl} target="_blank" rel="noreferrer" size="lg" className="rounded-full shadow-lg shadow-accent/25 hover:shadow-accent/40">
                   View Resume
+                </Button>
+              </MagneticWrap>
+              <MagneticWrap>
+                <Button
+                  as="a"
+                  href="#contact"
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full border-white/10 hover:bg-surface-hover"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Contact Me
                 </Button>
               </MagneticWrap>
             </motion.div>
 
-            <motion.div variants={slideUp} className="flex items-center gap-3">
+            <motion.div variants={slideUp} className="flex items-center gap-3.5 pt-2">
               {socialLinks.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
@@ -85,7 +104,7 @@ const Hero = () => {
                   target={href.startsWith('mailto:') ? undefined : '_blank'}
                   rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
                   aria-label={label}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-all hover:-translate-y-1 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface/50 text-foreground transition-all hover:-translate-y-1 hover:border-accent hover:text-accent hover:shadow-md focus-visible:outline-none"
                 >
                   <Icon className="h-5 w-5" />
                 </a>
@@ -100,11 +119,14 @@ const Hero = () => {
             className="relative flex justify-center md:justify-end"
           >
             <div className="relative">
-              <Parallax offset={25} className="relative rounded-full bg-accent p-2">
+              {/* Outer Glowing Pulsing Ring */}
+              <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-indigo-500 via-sky-400 to-purple-600 opacity-60 blur-xl animate-pulse" />
+              
+              <Parallax offset={25} className="relative rounded-full border-2 border-white/20 bg-background/80 p-2 shadow-2xl backdrop-blur-sm">
                 <img
                   src={profileImage}
                   alt={personalInfo.name}
-                  className="h-64 w-64 rounded-full object-cover sm:h-80 sm:w-80 md:h-96 md:w-96"
+                  className="h-64 w-64 rounded-full object-cover sm:h-80 sm:w-80 md:h-96 md:w-96 shadow-inner"
                 />
               </Parallax>
               {floatingBadges.map((badge) => (
@@ -114,10 +136,10 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center gap-3">
-          <span className="font-mono text-xs text-muted-foreground">
-            Explore the interactive terminal below — type{' '}
-            <span className="text-accent">help</span> to begin
+        <div className="mt-20 flex flex-col items-center gap-3">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 font-mono text-xs text-muted-foreground backdrop-blur-sm">
+            <span className="h-2 w-2 rounded-full bg-accent animate-ping" />
+            Explore interactive CLI — type <span className="text-accent font-bold">help</span> below
           </span>
           <InteractiveTerminal />
         </div>

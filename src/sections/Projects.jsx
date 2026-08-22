@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { cn } from '../utils/cn';
 import { AnimatePresence, motion, useInView, useScroll } from 'framer-motion';
 import {
   ArrowRight,
-  Calendar,
-  CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
   ExternalLink,
   Heart,
+  Eye,
+  Sparkles,
+  Layers,
+  Calendar,
+  Clock,
+  CheckCircle2,
 } from 'lucide-react';
 import { projects } from '../utils/data';
 import Container from '../components/ui/Container';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '../components/ui/Dialog';
 import useTilt from '../components/ui/useTilt';
+import ProjectModal from '../components/ui/ProjectModal';
 import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 import { GithubIcon } from '../components/ui/icons';
 
@@ -25,6 +25,8 @@ const lsLines = [
   [{ t: 'spendwise/', c: 'text-emerald-500 dark:text-emerald-400' }],
   [{ t: 'dress-store/', c: 'text-emerald-500 dark:text-emerald-400' }],
   [{ t: 'uptime-monitor/', c: 'text-emerald-500 dark:text-emerald-400' }],
+  [{ t: 'venture-track/', c: 'text-emerald-500 dark:text-emerald-400' }],
+  [{ t: 'local-document-rag/', c: 'text-emerald-500 dark:text-emerald-400' }],
 ];
 
 const LIKED_KEY = 'liked-projects';
@@ -51,7 +53,7 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
     if (!hovered || project.images.length <= 1) return undefined;
     const id = setInterval(() => {
       setPreviewIndex((i) => (i + 1) % project.images.length);
-    }, 900);
+    }, 1000);
     return () => clearInterval(id);
   }, [hovered, project.images.length]);
 
@@ -72,10 +74,10 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
     });
   };
 
-  const displayedImage = hovered ? project.images[previewIndex] : project.thumbnail;
+  const displayedImage = hovered && project.images[previewIndex] ? project.images[previewIndex] : project.thumbnail;
 
   return (
-    <div ref={ref} className="relative z-10 py-10 md:py-14">
+    <div ref={ref} className="relative z-10 py-10 md:py-16">
       <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
         <motion.div
           initial={{ opacity: 0, x: reverse ? 60 : -60 }}
@@ -86,14 +88,15 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
           <div className="relative" style={{ perspective: '1400px' }}>
             <span
               aria-hidden
-              className={`pointer-events-none absolute -top-10 select-none text-7xl font-black leading-none text-transparent [-webkit-text-stroke:1px_var(--border)] md:-top-14 md:text-8xl ${
+              className={`pointer-events-none absolute -top-10 select-none text-7xl font-black leading-none text-transparent [-webkit-text-stroke:1px_var(--border)] md:-top-14 md:text-8xl opacity-40 ${
                 reverse ? 'right-0 md:-right-4' : 'left-0 md:-left-4'
               }`}
             >
               {indexLabel}
             </span>
 
-            <div
+            <motion.div
+              style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
               onMouseMove={onMouseMove}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={() => {
@@ -101,77 +104,54 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
                 setHovered(false);
               }}
               onClick={() => onOpen(project)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && onOpen(project)}
-              className="relative z-10 cursor-pointer"
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-surface/80 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-accent/50 hover:shadow-accent/20"
             >
-              <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}>
-                <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-lg transition-shadow duration-300 hover:border-accent/40 hover:shadow-xl">
-                  <div className="flex h-9 items-center gap-1.5 border-b border-border bg-surface-hover/50 px-4">
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
-                    <span className="ml-3 rounded-md bg-background px-2 py-0.5 font-mono text-[0.65rem] tracking-wide text-muted-foreground">
-                      {project.name.toLowerCase().replace(/\s+/g, '-')}.app
-                    </span>
-                    <button
-                      type="button"
-                      onClick={toggleLike}
-                      aria-label={liked ? 'Unlike project' : 'Like project'}
-                      aria-pressed={liked}
-                      className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <motion.span
-                        key={liked ? 'liked' : 'unliked'}
-                        initial={{ scale: 0.6 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                        className="inline-flex"
-                      >
-                        <Heart className={liked ? 'h-3.5 w-3.5 fill-accent text-accent' : 'h-3.5 w-3.5'} />
-                      </motion.span>
-                    </button>
-                  </div>
+              <motion.div
+                className="pointer-events-none absolute inset-0 mix-blend-overlay z-10"
+                style={{ backgroundImage: spotlight }}
+              />
+              <div className="relative aspect-video w-full overflow-hidden bg-black/40">
+                <motion.img
+                  key={displayedImage}
+                  src={displayedImage}
+                  alt={project.name}
+                  initial={{ scale: 1.05, opacity: 0.9 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
 
-                  <div className="relative flex h-64 items-center justify-center overflow-hidden bg-black sm:h-80 md:h-96">
-                    <div
-                      className="absolute inset-0 scale-110 bg-cover bg-center opacity-40 blur-2xl"
-                      style={{ backgroundImage: `url(${displayedImage})` }}
-                    />
-                    <AnimatePresence mode="sync">
-                      <motion.img
-                        key={displayedImage}
-                        src={displayedImage}
-                        alt={project.name}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute left-1/2 top-1/2 max-h-[92%] max-w-[92%] -translate-x-1/2 -translate-y-1/2 rounded-md object-contain shadow-2xl"
-                      />
-                    </AnimatePresence>
-                    {hovered && project.images.length > 1 && (
-                      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1">
-                        {project.images.map((img, i) => (
-                          <span
-                            key={img}
-                            className={cn(
-                              'h-1 rounded-full transition-all',
-                              i === previewIndex ? 'w-4 bg-accent' : 'w-1 bg-white/30'
-                            )}
-                          />
-                        ))}
-                      </div>
-                    )}
-                    <motion.div
-                      className="pointer-events-none absolute inset-0 mix-blend-overlay"
-                      style={{ backgroundImage: spotlight }}
-                    />
-                  </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-60" />
+
+                <div className="absolute left-4 top-4 flex items-center gap-2">
+                  <span className="rounded-full border border-white/10 bg-black/60 px-3 py-1 text-xs font-mono font-medium text-white backdrop-blur-md">
+                    {project.year}
+                  </span>
+                  <span className="rounded-full bg-accent/90 px-3 py-1 text-xs font-semibold text-white shadow-md">
+                    {project.status}
+                  </span>
                 </div>
-              </motion.div>
-            </div>
+
+                <div className="absolute right-4 top-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={toggleLike}
+                    className={`rounded-full p-2.5 backdrop-blur-md transition-transform active:scale-95 ${
+                      liked
+                        ? 'bg-rose-500/90 text-white'
+                        : 'bg-black/60 text-white/80 hover:bg-black/90 hover:text-white'
+                    }`}
+                  >
+                    <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} />
+                  </button>
+                </div>
+
+                <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <Eye className="h-3.5 w-3.5 text-accent" />
+                  View Showcase
+                </div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -243,140 +223,8 @@ const ShowcaseRow = ({ project, index, onOpen }) => {
   );
 };
 
-const ProjectModal = ({ project, open, onClose }) => {
-  const [activeImage, setActiveImage] = useState(0);
-
-  return (
-    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
-      <DialogContent className="max-w-5xl p-0">
-        {project && (
-          <>
-            <DialogTitle className="sr-only">{project.name}</DialogTitle>
-            <DialogDescription className="sr-only">{project.shortDescription}</DialogDescription>
-            <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr]">
-              <div className="flex flex-col gap-3 p-4 md:p-6">
-                <div className="relative flex h-64 items-center justify-center overflow-hidden rounded-xl border border-border bg-black sm:h-80 md:h-[420px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center opacity-40 blur-xl"
-                    style={{ backgroundImage: `url(${project.images[activeImage]})` }}
-                  />
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={activeImage}
-                      src={project.images[activeImage]}
-                      alt={`${project.name} screenshot ${activeImage + 1}`}
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.04 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative max-h-[92%] max-w-[92%] object-contain shadow-xl"
-                    />
-                  </AnimatePresence>
-
-                  {project.images.length > 1 && (
-                    <div className="absolute bottom-3 right-3 flex gap-1.5">
-                      <button
-                        type="button"
-                        aria-label="Previous screenshot"
-                        disabled={activeImage === 0}
-                        onClick={() => setActiveImage((prev) => Math.max(0, prev - 1))}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-30"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </button>
-                      <button
-                        type="button"
-                        aria-label="Next screenshot"
-                        disabled={activeImage === project.images.length - 1}
-                        onClick={() => setActiveImage((prev) => Math.min(project.images.length - 1, prev + 1))}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-background/70 text-foreground backdrop-blur transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-30"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {project.images.length > 1 && (
-                  <div className="flex gap-2 overflow-x-auto pb-1">
-                    {project.images.map((img, i) => (
-                      <button
-                        type="button"
-                        key={img}
-                        onClick={() => setActiveImage(i)}
-                        aria-label={`View screenshot ${i + 1}`}
-                        className={`h-14 w-20 shrink-0 overflow-hidden rounded-md border-2 bg-black/40 transition-opacity ${
-                          activeImage === i ? 'border-accent opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
-                        }`}
-                      >
-                        <img src={img} alt="" className="h-full w-full object-contain" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-col border-t border-border p-6 md:border-l md:border-t-0 md:p-8">
-                <h3 className="mb-2 text-2xl font-bold text-foreground md:text-3xl">{project.name}</h3>
-                <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4" />
-                    {project.year}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4" />
-                    {project.duration}
-                  </span>
-                </div>
-                <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-
-                <div className="mb-6">
-                  <h4 className="mb-3 text-sm font-semibold text-foreground">Key Features</h4>
-                  <ul className="flex flex-col gap-2">
-                    {project.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="mb-3 text-sm font-semibold text-foreground">Tech Stack</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <Badge key={tech} variant="accent">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-auto flex gap-3">
-                  {project.githubUrl && (
-                    <Button as="a" href={project.githubUrl} target="_blank" rel="noreferrer" variant="outline" className="flex-1">
-                      GitHub
-                    </Button>
-                  )}
-                  {project.liveUrl && (
-                    <Button as="a" href={project.liveUrl} target="_blank" rel="noreferrer" className="flex-1">
-                      Live Demo
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const headerRef = useRef(null);
   const rowsRef = useRef(null);
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-100px' });
@@ -384,7 +232,6 @@ const Projects = () => {
 
   const handleOpen = (project) => {
     setSelectedProject(project);
-    setModalOpen(true);
   };
 
   return (
@@ -441,7 +288,9 @@ const Projects = () => {
         </div>
       </Container>
 
-      <ProjectModal project={selectedProject} open={modalOpen} onClose={() => setModalOpen(false)} />
+      {selectedProject && (
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      )}
     </section>
   );
 };

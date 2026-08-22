@@ -32,6 +32,10 @@ import ventureTrack5 from '../assets/images/venturesTrack/venture-track-user.png
 import ventureTrack6 from '../assets/images/venturesTrack/venture-track-report.png?url';
 import ventureTrack7 from '../assets/images/venturesTrack/venture-track-settings.png?url';
 
+import rag1 from '../assets/images/rag/home.png?url';
+import rag2 from '../assets/images/rag/chat.png?url';
+import rag3 from '../assets/images/rag/source.png?url';
+
 // Portfolio data centralized for easy maintenance
 export const personalInfo = {
   name: "Selva Santhanam",
@@ -189,6 +193,29 @@ export const projects = [
     githubUrl: "",
     status: "Completed",
     duration: "1 Day",
+    year: 2026,
+  },
+  {
+    id: 5,
+    name: "Local Document RAG AI Assistant",
+    description:
+      "An autonomous Retrieval-Augmented Generation (RAG) system built with Python, FastAPI, FAISS vector search, and Google Gemini API. It allows users to upload documents (PDF, DOCX, TXT), index vector embeddings locally using SentenceTransformers, and converse with an AI assistant that streams responses grounded strictly in document context with source citations.",
+    shortDescription: "Autonomous Document RAG system using Python, FAISS, and Google Gemini API.",
+    technologies: ["Python", "FastAPI", "Google Gemini API", "FAISS", "SentenceTransformers", "React", "Vite"],
+    features: [
+      "Upload and extract text from PDF, DOCX, and TXT files",
+      "Local vector embedding generation using SentenceTransformers",
+      "Fast FAISS vector store indexing and similarity search",
+      "Real-time answer streaming powered by Google Gemini API",
+      "Document activation toggle and chat history management",
+      "Source document citations & chunk metadata inspection",
+    ],
+    images: [rag1, rag2, rag3],
+    thumbnail: rag1,
+    liveUrl: "",
+    githubUrl: "",
+    status: "Completed",
+    duration: "1 Week",
     year: 2026,
   },
 ];
