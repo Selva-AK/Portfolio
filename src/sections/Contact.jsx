@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, Copy, Loader2, Mail, MessageSquare, Send, User } from 'lucide-react';
+import { Check, Copy, Loader2, Mail, MessageSquare, Send, User, Sparkles, MapPin, Clock } from 'lucide-react';
 import { personalInfo } from '../utils/data';
 import { slideUp } from '../utils/animations';
 import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
-import Card from '../components/ui/Card';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import { Input, Textarea } from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
-import Parallax from '../components/ui/Parallax';
 import FloatingCodeCard from '../components/ui/FloatingCodeCard';
 import MagneticWrap from '../components/ui/MagneticWrap';
 import ConfettiBurst from '../components/ui/ConfettiBurst';
@@ -40,7 +38,7 @@ const Contact = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // clipboard unavailable — silently ignore
+      // clipboard unavailable
     }
   };
 
@@ -61,7 +59,7 @@ const Contact = () => {
 
       if (!response.ok) throw new Error('Failed to send message');
 
-      setToast({ open: true, message: 'Your message has been sent successfully. I will respond as soon as possible.', variant: 'success' });
+      setToast({ open: true, message: 'Your message has been sent successfully! I will get back to you shortly.', variant: 'success' });
       setFormData({ name: '', email: '', message: '' });
       setCelebrate((c) => c + 1);
       setSent(true);
@@ -75,76 +73,79 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden py-6">
-      <Parallax offset={70} className="pointer-events-none absolute right-[-10%] top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
-
+    <section id="contact" className="relative overflow-hidden py-16 md:py-24">
       <Container>
-        <div className="relative mx-auto max-w-2xl">
+        <div className="relative mx-auto max-w-3xl">
           <FloatingCodeCard
             filename="response.json"
             lines={apiLines}
-            className="-right-8 top-4 xl:-right-16"
+            className="-right-8 top-4 xl:-right-16 hidden md:block"
             floatDelay={0.5}
             rotate={3}
             cursor={false}
           />
-          <FloatingCodeCard
-            filename="request.js"
-            lines={[
-              [{ t: 'const', c: 'text-accent' }, { t: ' res = ', c: 'text-foreground' }, { t: 'await', c: 'text-accent' }],
-              [{ t: '  sendMessage(form);', c: 'text-emerald-500 dark:text-emerald-400' }],
-            ]}
-            className="-left-8 bottom-10 xl:-left-16"
-            floatDelay={1.4}
-            rotate={-3}
-            cursor={false}
-          />
 
           <SectionHeading
-            eyebrow="Get in Touch"
-            title="Contact Me"
-            description="Have a question or a potential opportunity in mind? I would welcome the chance to connect."
+            eyebrow="Direct Connection"
+            title="Let's Build Something Extraordinary"
+            description="Have a high-impact role, startup idea, or technical question? Send a message directly to my inbox."
           />
 
-          <button
-            type="button"
-            onClick={handleCopyEmail}
-            className="mx-auto -mt-8 mb-14 flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none"
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
-            {copied ? 'Copied to clipboard!' : personalInfo.email}
-          </button>
+          {/* Contact Info Pills */}
+          <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/80 px-4 py-2 text-xs font-semibold text-foreground backdrop-blur-md transition-all hover:border-accent/40 hover:shadow-md"
+            >
+              {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4 text-accent" />}
+              <span>{copied ? 'Copied Email!' : personalInfo.email}</span>
+            </button>
+
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/80 px-4 py-2 text-xs font-semibold text-muted-foreground backdrop-blur-md">
+              <MapPin className="h-4 w-4 text-accent" />
+              <span>{personalInfo.location}</span>
+            </span>
+
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-400 backdrop-blur-md">
+              <Clock className="h-4 w-4" />
+              <span>Typical reply &lt; 24h</span>
+            </span>
+          </div>
 
           <Reveal variants={slideUp}>
-            <Card className="p-6 md:p-10">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <Input
-                  icon={User}
-                  name="name"
-                  type="text"
-                  placeholder="Your Name"
-                  aria-label="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-                <Input
-                  icon={Mail}
-                  name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  aria-label="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+            <div className="rounded-3xl border border-white/10 bg-surface/90 p-6 shadow-2xl backdrop-blur-2xl md:p-10">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <Input
+                    icon={User}
+                    name="name"
+                    type="text"
+                    placeholder="Your Name"
+                    aria-label="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                  <Input
+                    icon={Mail}
+                    name="email"
+                    type="email"
+                    placeholder="Your Email"
+                    aria-label="Your Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
                 <div>
                   <Textarea
                     icon={MessageSquare}
                     name="message"
-                    placeholder="Your Message"
+                    placeholder="Project details, inquiry, or hello..."
                     aria-label="Your Message"
-                    rows={6}
+                    rows={5}
                     maxLength={MAX_MESSAGE_LENGTH}
                     value={formData.message}
                     onChange={handleChange}
@@ -152,7 +153,7 @@ const Contact = () => {
                   />
                   <p
                     className={cn(
-                      'mt-1.5 text-right text-xs font-medium transition-colors',
+                      'mt-2 text-right text-xs font-mono font-medium transition-colors',
                       formData.message.length >= MAX_MESSAGE_LENGTH
                         ? 'text-red-500'
                         : formData.message.length >= MAX_MESSAGE_LENGTH * 0.85
@@ -163,10 +164,11 @@ const Contact = () => {
                     {formData.message.length}/{MAX_MESSAGE_LENGTH}
                   </p>
                 </div>
+
                 <div className="relative">
                   <ConfettiBurst triggerKey={celebrate} />
                   <MagneticWrap strength={0.15} className="block w-full">
-                    <Button type="submit" size="lg" disabled={loading} className="w-full overflow-hidden">
+                    <Button type="submit" size="lg" disabled={loading} className="w-full rounded-2xl bg-accent shadow-lg shadow-accent/25 hover:bg-accent-hover active:scale-95">
                       <AnimatePresence mode="wait" initial={false}>
                         {loading ? (
                           <motion.span
@@ -174,11 +176,10 @@ const Contact = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
-                            className="inline-flex items-center gap-2"
+                            className="inline-flex items-center gap-2 font-bold"
                           >
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Sending...
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                            Dispatching Message...
                           </motion.span>
                         ) : sent ? (
                           <motion.span
@@ -186,11 +187,10 @@ const Contact = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
-                            className="inline-flex items-center gap-2"
+                            className="inline-flex items-center gap-2 font-bold text-emerald-300"
                           >
-                            <Check className="h-4 w-4" />
-                            Sent!
+                            <Check className="h-5 w-5" />
+                            Message Sent!
                           </motion.span>
                         ) : (
                           <motion.span
@@ -198,10 +198,9 @@ const Contact = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
-                            className="inline-flex items-center gap-2"
+                            className="inline-flex items-center gap-2 font-bold"
                           >
-                            Send Message
+                            Send Direct Message
                             <Send className="h-4 w-4" />
                           </motion.span>
                         )}
@@ -210,7 +209,7 @@ const Contact = () => {
                   </MagneticWrap>
                 </div>
               </form>
-            </Card>
+            </div>
           </Reveal>
         </div>
       </Container>

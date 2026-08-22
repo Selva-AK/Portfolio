@@ -1,18 +1,15 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Cloud, Code2, Search, Server, Sparkles, X } from 'lucide-react';
+import { Cloud, Code2, Search, Server, Sparkles, X, Cpu } from 'lucide-react';
 import { skills } from '../utils/data';
 import { staggerContainer, staggerItem } from '../utils/animations';
 import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
-import Card from '../components/ui/Card';
 import Reveal from '../components/ui/Reveal';
 import ProgressBar from '../components/ui/ProgressBar';
-import Parallax from '../components/ui/Parallax';
 import FloatingCodeCard from '../components/ui/FloatingCodeCard';
-import { Input } from '../components/ui/Input';
 
-const categoryIcons = [Code2, Server, Cloud, Sparkles];
+const categoryIcons = [Code2, Server, Cloud, Cpu];
 
 const terminalLines = [
   [{ t: '$ ', c: 'text-accent' }, { t: 'whoami', c: 'text-foreground' }],
@@ -39,44 +36,40 @@ const Skills = () => {
   const totalMatches = filteredCategories.reduce((sum, c) => sum + c.items.length, 0);
 
   return (
-    <section id="skills" className="relative overflow-hidden bg-surface/40 py-6">
-      <Parallax offset={70} className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-[100px]" />
-      <Sparkles className="pointer-events-none absolute right-[8%] top-[12%] hidden h-24 w-24 -rotate-12 text-accent/[0.07] lg:block" />
-      <Code2 className="pointer-events-none absolute bottom-[10%] left-[6%] hidden h-28 w-28 rotate-12 text-accent/[0.06] lg:block" />
-
+    <section id="skills" className="relative overflow-hidden py-16 md:py-24 bg-surface/30">
       <Container>
-        <div className="relative">
+        <div className="relative mb-12">
           <FloatingCodeCard
             filename="terminal"
             lines={terminalLines}
-            className="-right-4 top-0 xl:right-4"
+            className="-right-4 top-0 xl:right-4 hidden md:block"
             floatDelay={0.5}
             rotate={3}
             cursor
           />
           <SectionHeading
-            eyebrow="Tech Stack"
-            title="Skills & Expertise"
-            description="Crafting digital experiences with modern, production-grade technologies."
+            eyebrow="Tech Stack & Matrix"
+            title="Skills & Engineering Proficiency"
+            description="Production-tested technologies across modern front-end frameworks, backend systems, database architecture, and cloud infrastructure."
           />
         </div>
 
-        <div className="mx-auto mb-10 max-w-sm">
-          <div className="relative">
-            {/* <Input
-              icon={Search}
+        {/* Search Skill Input */}
+        <div className="mx-auto mb-12 max-w-md">
+          <div className="relative flex items-center">
+            <Search className="absolute left-4 h-4 w-4 text-accent" />
+            <input
+              type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search a skill..."
-              aria-label="Search skills"
-              className="pr-9"
-            /> */}
+              placeholder="Search a technology (e.g. React, AWS, Node...)"
+              className="w-full rounded-full border border-border bg-surface/80 py-3 pl-11 pr-10 text-sm font-medium text-foreground shadow-sm backdrop-blur-md placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+            />
             {query && (
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                aria-label="Clear search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute right-3.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -91,9 +84,9 @@ const Skills = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="py-10 text-center text-muted-foreground"
+              className="py-12 text-center text-muted-foreground"
             >
-              No skills match <span className="text-accent">&ldquo;{query}&rdquo;</span>.
+              No skills match <span className="text-accent font-semibold">&ldquo;{query}&rdquo;</span>.
             </motion.p>
           ) : (
             <motion.div
@@ -102,7 +95,7 @@ const Skills = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col gap-14"
+              className="flex flex-col gap-12"
             >
               {filteredCategories.map((category) => {
                 const categoryIndex = skills.findIndex((c) => c.category === category.category);
@@ -110,10 +103,10 @@ const Skills = () => {
                 return (
                   <Reveal key={category.category} variants={staggerContainer}>
                     <div className="mb-6 flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-surface text-accent">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent shadow-md">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <h3 className="text-xl font-semibold text-foreground">
+                      <h3 className="text-xl font-bold text-foreground">
                         {cleanLabel(category.category)}
                       </h3>
                     </div>
@@ -121,9 +114,9 @@ const Skills = () => {
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                       {category.items.map((skill) => (
                         <motion.div key={skill.name} variants={staggerItem} layout>
-                          <Card className="p-5">
+                          <div className="group rounded-2xl border border-white/10 bg-surface/80 p-5 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-accent/40 hover:shadow-accent/10 hover:-translate-y-1">
                             <ProgressBar label={skill.name} percentage={skill.percentage} />
-                          </Card>
+                          </div>
                         </motion.div>
                       ))}
                     </div>

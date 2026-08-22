@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import { personalInfo } from '../../utils/data';
 import { cn } from '../../utils/cn';
 import Container from '../ui/Container';
@@ -35,7 +35,7 @@ function useHideOnScroll() {
   return { hidden, scrolled };
 }
 
-const Navbar = () => {
+const Navbar = ({ onOpenCommandPalette }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { hidden, scrolled } = useHideOnScroll();
@@ -74,7 +74,7 @@ const Navbar = () => {
         className={cn(
           'fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300',
           scrolled
-            ? 'border-border bg-background/80 backdrop-blur-lg'
+            ? 'border-white/10 bg-background/75 backdrop-blur-xl shadow-lg'
             : 'border-transparent bg-transparent'
         )}
       >
@@ -86,12 +86,17 @@ const Navbar = () => {
                 e.preventDefault();
                 handleNavClick('#home');
               }}
-              className="text-lg font-bold tracking-tight text-foreground"
+              className="group flex items-center gap-2 text-lg font-extrabold tracking-tight text-foreground"
             >
-              {personalInfo.name}
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-accent to-cyan-400 text-white font-mono text-sm shadow-md transition-transform group-hover:scale-110">
+                S
+              </span>
+              <span>
+                {personalInfo.name}<span className="text-accent">.</span>
+              </span>
             </a>
 
-            <nav className="hidden items-center gap-1 md:flex">
+            <nav className="hidden items-center gap-1.5 md:flex">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.substring(1);
                 return (
@@ -103,24 +108,46 @@ const Navbar = () => {
                       handleNavClick(item.href);
                     }}
                     className={cn(
-                      'relative px-3 py-2 text-sm font-medium transition-colors',
-                      isActive ? 'text-accent' : 'text-muted-foreground hover:text-foreground'
+                      'relative px-3.5 py-2 text-sm font-medium transition-colors',
+                      isActive ? 'text-accent font-semibold' : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
                     {item.label}
                     {isActive && (
                       <motion.span
                         layoutId="nav-active-underline"
-                        className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-accent"
+                        className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gradient-to-r from-accent to-cyan-400"
                       />
                     )}
                   </a>
                 );
               })}
+
+              {/* Command Palette Trigger Button */}
+              <button
+                type="button"
+                onClick={onOpenCommandPalette}
+                className="ml-3 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-accent/40 hover:text-foreground hover:shadow-sm"
+              >
+                <Search className="h-3.5 w-3.5 text-accent" />
+                <span className="hidden lg:inline">Search...</span>
+                <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono text-foreground">
+                  ⌘K
+                </kbd>
+              </button>
+
               <ThemeToggle className="ml-2" />
             </nav>
 
-            <div className="flex items-center gap-1 md:hidden">
+            <div className="flex items-center gap-2 md:hidden">
+              <button
+                type="button"
+                onClick={onOpenCommandPalette}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground hover:text-foreground"
+                aria-label="Search"
+              >
+                <Search className="h-4 w-4" />
+              </button>
               <ThemeToggle />
               <button
                 type="button"
@@ -135,7 +162,7 @@ const Navbar = () => {
         </Container>
         <motion.div
           style={{ scaleX }}
-          className="h-0.5 origin-left bg-accent"
+          className="h-0.5 origin-left bg-gradient-to-r from-accent via-cyan-400 to-indigo-500"
         />
       </motion.header>
 

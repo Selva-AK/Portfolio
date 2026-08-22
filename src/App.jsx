@@ -5,6 +5,8 @@ import Navbar from './components/layout/Navbar';
 import ScrollToTop from './components/layout/ScrollToTop';
 import BootScreen from './components/ui/BootScreen';
 import CustomCursor from './components/ui/CustomCursor';
+import BackgroundGlow from './components/ui/BackgroundGlow';
+import CommandPalette from './components/ui/CommandPalette';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
@@ -20,6 +22,7 @@ function App() {
   const [booting, setBooting] = useState(
     () => typeof window !== 'undefined' && !window.localStorage.getItem(VISITED_KEY)
   );
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const handleBootComplete = () => {
     window.localStorage.setItem(VISITED_KEY, '1');
@@ -29,11 +32,16 @@ function App() {
   return (
     <ThemeProvider>
       <CustomCursor />
+      <BackgroundGlow />
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+      />
       <AnimatePresence>
         {booting && <BootScreen onComplete={handleBootComplete} />}
       </AnimatePresence>
-      <Navbar />
-      <main>
+      <Navbar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
+      <main className="relative z-10">
         <Hero />
         <About />
         <Skills />
@@ -49,3 +57,4 @@ function App() {
 }
 
 export default App;
+
